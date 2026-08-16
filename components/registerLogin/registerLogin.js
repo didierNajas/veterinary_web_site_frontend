@@ -125,7 +125,7 @@ loginForm.addEventListener("submit", async function (e) {
       loginForm.reset();
       setTimeout(() => {
         resetInputs(inputs);
-        window.location.href = "/components/dashboard/dashboard.html"; // Redirect to dashboard or home page
+        window.location.href = "../components/dashboard/dashboard.html"; // Redirect to dashboard or home page
       }, 1500);
     } else {
       showMessage(
