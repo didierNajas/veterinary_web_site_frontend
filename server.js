@@ -11,7 +11,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/dashboard.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "dashboard.html"));
+  res.sendFile(path.join(__dirname, "components", "dashboard", "dashboard.html"));
+});
+
+app.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "components", "dashboard", "dashboard.html"));
 });
 
 app.listen(PORT, () => {

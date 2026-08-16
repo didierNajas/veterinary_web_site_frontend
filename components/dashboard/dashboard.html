@@ -7,162 +7,110 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f0fdf4;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --primary: #059669;
-      --danger: #dc2626;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at top left, #f0fdf4 0%, #dcfce7 35%, #bbf7d0 100%);
-      color: var(--text);
-      padding: 32px;
-    }
-
-    .card {
-      max-width: 640px;
-      margin: 0 auto;
-      background: var(--card);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 12px 12px 24px #dcfce7, -12px -12px 24px #ffffff;
-    }
-
-    h1 {
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-
-    p {
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    #userInfo {
-      background: #ecfdf5;
-      border-radius: 16px;
-      padding: 16px;
-      margin: 24px 0;
-      white-space: pre-wrap;
-      font-size: 14px;
-      color: var(--text);
-    }
-
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      border-radius: 999px;
-      padding: 12px 20px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    #refreshBtn {
-      background: var(--primary);
-      color: white;
-    }
-
-    #logoutBtn {
-      background: #fee2e2;
-      color: var(--danger);
-    }
-
-    .error {
-      color: var(--danger);
-    }
-  </style>
+  <link rel="stylesheet" href="/components/dashboard/dashboard.css">
 </head>
 <body>
-  <div class="card">
-    <h1>Dashboard</h1>
-    <p>Sesión conectada al backend en <code>http://localhost:8080</code></p>
-    <div id="userInfo">Cargando perfil...</div>
-    <div class="actions">
-      <button id="refreshBtn" type="button">Actualizar perfil</button>
-      <button id="logoutBtn" type="button">Cerrar sesión</button>
-    </div>
-  </div>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Panel veterinario</h1>
+        <p id="welcomeText">Cargando sesión...</p>
+      </div>
+      <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+    </header>
 
-  <script>
-    const API_BASE_URL = "http://localhost:8080/api";
-    const userInfo = document.getElementById("userInfo");
+    <section class="card">
+      <h2>Mi perfil</h2>
+      <div id="userInfo" class="info-box">Cargando perfil...</div>
+      <div class="actions">
+        <button id="refreshBtn" type="button" class="btn btn-primary">Actualizar perfil</button>
+      </div>
+    </section>
 
-    function getToken() {
-      return localStorage.getItem("token") || localStorage.getItem("authToken");
-    }
+    <section class="card">
+      <h2>Cambiar password</h2>
+      <p class="hint">Actualiza tu contraseña. Mínimo 6 caracteres.</p>
+      <form id="changePasswordForm" class="form-grid" novalidate>
+        <label>
+          Nueva contraseña
+          <input type="password" id="newPassword" autocomplete="new-password" placeholder="Nueva contraseña">
+        </label>
+        <label>
+          Confirmar contraseña
+          <input type="password" id="confirmNewPassword" autocomplete="new-password" placeholder="Confirmar contraseña">
+        </label>
+        <button id="changePasswordBtn" type="submit" class="btn btn-primary">Cambiar password</button>
+      </form>
+      <p id="passwordMessage" class="message" hidden></p>
+    </section>
 
-    function logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("tokenType");
-      localStorage.removeItem("user");
-      window.location.href = "/";
-    }
+    <section id="adminSection" class="card" hidden>
+      <h2>Administración de usuarios</h2>
+      <p class="hint">Solo visible para ADMIN. Editar = PUT · Desactivar = DELETE lógico.</p>
+      <div class="actions">
+        <button id="reloadUsersBtn" type="button" class="btn btn-primary">Recargar usuarios</button>
+      </div>
+      <p id="adminMessage" class="message" hidden></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr><td colspan="6">Cargando usuarios...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-    async function loadProfile() {
-      const token = getToken();
-      if (!token) {
-        window.location.href = "/";
-        return;
-      }
+  <dialog id="editUserDialog">
+    <form id="editUserForm" class="dialog-form">
+      <h3>Editar usuario</h3>
+      <input type="hidden" id="editUserId">
+      <label>
+        Nombre completo
+        <input type="text" id="editFullName" required>
+      </label>
+      <label>
+        Email
+        <input type="email" id="editEmail" required>
+      </label>
+      <label>
+        Teléfono
+        <input type="text" id="editTelefono">
+      </label>
+      <label>
+        Dirección
+        <input type="text" id="editDireccion">
+      </label>
+      <label>
+        Rol
+        <select id="editRole">
+          <option value="CUSTOMER">CUSTOMER</option>
+          <option value="VETERINARIAN">VETERINARIAN</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </label>
+      <label>
+        Nueva contraseña (opcional)
+        <input type="password" id="editPassword" placeholder="Dejar vacío para no cambiar">
+      </label>
+      <p id="editMessage" class="message" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" id="cancelEditBtn" class="btn btn-muted">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </dialog>
 
-      userInfo.textContent = "Cargando perfil...";
-
-      try {
-        const response = await fetch(`${API_BASE_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === 401 || response.status === 403) {
-          logout();
-          return;
-        }
-
-        if (!response.ok) {
-          const error = await response.json().catch(() => ({}));
-          userInfo.classList.add("error");
-          userInfo.textContent = error.message || "No se pudo cargar el perfil";
-          return;
-        }
-
-        const user = await response.json();
-        localStorage.setItem("user", JSON.stringify(user));
-        userInfo.classList.remove("error");
-        userInfo.textContent =
-          `ID: ${user.id}\n` +
-          `Nombre: ${user.fullName}\n` +
-          `Email: ${user.email}\n` +
-          `Rol: ${user.role}`;
-      } catch (error) {
-        userInfo.classList.add("error");
-        userInfo.textContent =
-          "No se pudo conectar con el backend. Verifica que esté corriendo en el puerto 8080.";
-        console.error(error);
-      }
-    }
-
-    document.getElementById("refreshBtn").addEventListener("click", loadProfile);
-    document.getElementById("logoutBtn").addEventListener("click", logout);
-    loadProfile();
-  </script>
+  <script src="/components/dashboard/dashboard.js"></script>
 </body>
 </html>
