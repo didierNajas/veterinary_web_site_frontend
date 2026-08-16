@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Miscellaneous
+/qodo/
+
+# Package files - npm, yarn, pnpm
+# Note: package-lock.json and yarn.lock are usually committed in apps
+# Uncomment the following lines if you prefer to ignore them
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Build outputs (if any)
+# dist/
+# build/

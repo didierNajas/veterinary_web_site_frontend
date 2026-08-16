@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Veterinary Web Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0fdf4;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #059669;
+      --danger: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top left, #f0fdf4 0%, #dcfce7 35%, #bbf7d0 100%);
+      color: var(--text);
+      padding: 32px;
+    }
+
+    .card {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 12px 12px 24px #dcfce7, -12px -12px 24px #ffffff;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    #userInfo {
+      background: #ecfdf5;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 24px 0;
+      white-space: pre-wrap;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #refreshBtn {
+      background: var(--primary);
+      color: white;
+    }
+
+    #logoutBtn {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .error {
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Dashboard</h1>
+    <p>Sesión conectada al backend en <code>http://localhost:8080</code></p>
+    <div id="userInfo">Cargando perfil...</div>
+    <div class="actions">
+      <button id="refreshBtn" type="button">Actualizar perfil</button>
+      <button id="logoutBtn" type="button">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = "http://localhost:8080/api";
+    const userInfo = document.getElementById("userInfo");
+
+    function getToken() {
+      return localStorage.getItem("token") || localStorage.getItem("authToken");
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("tokenType");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }
+
+    async function loadProfile() {
+      const token = getToken();
+      if (!token) {
+        window.location.href = "/";
+        return;
+      }
+
+      userInfo.textContent = "Cargando perfil...";
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401 || response.status === 403) {
+          logout();
+          return;
+        }
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => ({}));
+          userInfo.classList.add("error");
+          userInfo.textContent = error.message || "No se pudo cargar el perfil";
+          return;
+        }
+
+        const user = await response.json();
+        localStorage.setItem("user", JSON.stringify(user));
+        userInfo.classList.remove("error");
+        userInfo.textContent =
+          `ID: ${user.id}\n` +
+          `Nombre: ${user.fullName}\n` +
+          `Email: ${user.email}\n` +
+          `Rol: ${user.role}`;
+      } catch (error) {
+        userInfo.classList.add("error");
+        userInfo.textContent =
+          "No se pudo conectar con el backend. Verifica que esté corriendo en el puerto 8080.";
+        console.error(error);
+      }
+    }
+
+    document.getElementById("refreshBtn").addEventListener("click", loadProfile);
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    loadProfile();
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veterinary Web Site - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/components/registerLogin/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="scene">
+    <div class="wrapper">
+      <input type="checkbox" id="toggle">
+
+      <div class="slider">
+        <div class="slider-login">
+          <div class="slider-content">
+            <span class="badge">Welcome Back</span>
+            <h2>Hello, Friend!</h2>
+            <p>Enter your details and start your embossed UI journey with our modern sign up experience.</p>
+            <label for="toggle" class="switch-btn">Create Account</label>
+          </div>
+        </div>
+
+        <div class="slider-signup">
+          <div class="slider-content">
+            <span class="badge">Join Us</span>
+            <h2>Already have an account?</h2>
+            <p>Sign in to continue with the smooth embossed slide animation and premium login interface.</p>
+            <label for="toggle" class="switch-btn">Sign In</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="forms">
+        <div class="panel login-panel">
+          <div class="form-box">
+            <h2 class="form-title">Iniciar Sesión</h2>
+            <p class="form-subtitle">Inicia sesión para acceder a tu panel</p>
+
+            <div class="message" id="loginMessage">
+              <div class="icon">!</div>
+              <div class="text">
+                <strong>Alert</strong>
+                <span>Message appears here.</span>
+              </div>
+            </div>
+
+            <form id="loginForm" novalidate>
+              <div class="input-group">
+                <input type="email" class="input" id="loginEmail" placeholder="Email address">
+              </div>
+
+              <div class="input-group">
+                <input type="password" class="input" id="loginPassword" placeholder="Password">
+              </div>
+
+              <div class="options">
+                <label class="remember">
+                  <input type="checkbox">
+                  <span>Remember me</span>
+                </label>
+                <a href="#">Forgot password?</a>
+              </div>
+
+              <button type="submit" class="submit-btn">Login Now</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel signup-panel">
+          <div class="form-box">
+            <h2 class="form-title">Create Account</h2>
+            <p class="form-subtitle">Sign up and begin your experience</p>
+
+            <div class="message" id="signupMessage">
+              <div class="icon">!</div>
+              <div class="text">
+                <strong>Alert</strong>
+                <span>Message appears here.</span>
+              </div>
+            </div>
+
+            <form id="signupForm" novalidate>
+              <div class="row">
+                <div class="input-group">
+                  <input type="text" class="input" id="firstName" placeholder="First name">
+                </div>
+                <div class="input-group">
+                  <input type="text" class="input" id="lastName" placeholder="Last name">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <input type="email" class="input" id="signupEmail" placeholder="Email address">
+              </div>
+
+              <div class="input-group">
+                <input type="password" class="input" id="signupPassword" placeholder="Create password">
+              </div>
+
+              <div class="input-group">
+                <input type="password" class="input" id="confirmPassword" placeholder="Confirm password">
+              </div>
+
+              <div class="options" style="justify-content:flex-start;">
+                <label class="remember">
+                  <input type="checkbox" id="termsCheck">
+                  <span>I agree to the terms & conditions</span>
+                </label>
+              </div>
+
+              <button type="submit" class="submit-btn">Create Account</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/components/registerLogin/registerLogin.js"></script>
+</body>
+</html>
