@@ -3,124 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veterinary Web Site - Login</title>
+  <title>Veterinary Web Site - Inicio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="components/registerLogin/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <div class="scene">
-    <div class="wrapper">
-      <input type="checkbox" id="toggle">
-
-      <div class="slider">
-        <div class="slider-login">
-          <div class="slider-content">
-            <span class="badge">Welcome Back</span>
-            <h2>Hello, Friend!</h2>
-            <p>Enter your details and start your embossed UI journey with our modern sign up experience.</p>
-            <label for="toggle" class="switch-btn">Create Account</label>
-          </div>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">
+          <i class="fas fa-paw"></i>
+          <span>VetCare</span>
         </div>
+        <ul>
+          <li><a href="#">Inicio</a></li>
+          <li><a href="components/registerLogin/registerLogin.html">Iniciar Sesión</a></li>
+          <li><a href="#">Servicios</a></li>
+          <li><a href="#">Sobre Nosotros</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-        <div class="slider-signup">
-          <div class="slider-content">
-            <span class="badge">Join Us</span>
-            <h2>Already have an account?</h2>
-            <p>Sign in to continue with the smooth embossed slide animation and premium login interface.</p>
-            <label for="toggle" class="switch-btn">Sign In</label>
-          </div>
+  <section class="hero">
+    <div class="container">
+      <h1>Cuidamos de tus mascotas como si fueran nuestras</h1>
+      <p>Clínica veterinaria de última generación con equipo profesional y tecnología avanzada</p>
+      <a href="components/registerLogin/registerLogin.html" class="btn">Acceder al Sistema</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2>Nuestros Servicios</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-heartbeat"></i>
+          <h3>Consultas Médicas</h3>
+          <p>Atención veterinaria general y especializada para todas las especies</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-procedures"></i>
+          <h3>Cirugías</h3>
+          <p>Procedimientos quirúrgicos con anestesia segura y monitoreo constante</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-flask"></i>
+          <h3>Laboratorio</h3>
+          <p>Análisis clínicos rápidos y precisos para diagnóstico oportuno</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-bed"></i>
+          <h3>Hospitalización</h3>
+          <p>Instalaciones cómodas y atención 24/7 para pacientes críticos</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-tooth"></i>
+          <h3>Odontología</h3>
+          <p>Limpieza, extracciones y cuidados dentales especializados</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-dumbbell"></i>
+          <h3>Rehabilitación</h3>
+          <p>Terapias físicas y ejercicios para recuperación óptima</p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="forms">
-        <div class="panel login-panel">
-          <div class="form-box">
-            <h2 class="form-title">Iniciar Sesión</h2>
-            <p class="form-subtitle">Inicia sesión para acceder a tu panel</p>
-
-            <div class="message" id="loginMessage">
-              <div class="icon">!</div>
-              <div class="text">
-                <strong>Alert</strong>
-                <span>Message appears here.</span>
-              </div>
+  <section class="about">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-text">
+          <h2>Sobre Nuestra Clínica Veterinaria</h2>
+          <p>En VetCare nos dedicamos a proporcionar el mejor cuidado médico para tus mascotas. Con más de 10 años de experiencia, nuestro equipo de veterinarios altamente calificados está comprometido con la salud y el bienestar de cada animal que llega a nuestras instalaciones.</p>
+          <p>Utilizamos tecnología de última generación y seguimos los protocolos más actualizados en medicina veterinaria para garantizar diagnósticos precisos y tratamientos efectivos. Creemos en un enfoque integral que considera tanto la salud física como el bienestar emocional de tus compañeros peludos.</p>
+          <p>Nuestras instalaciones están diseñadas pensando en la comodidad tanto de las mascotas como de sus dueños, creando un ambiente tranquilo y acogedor que reduce el estrés durante las visitas veterinarias.</p>
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-number">10+</span>
+              <span class="stat-label">Años de Experiencia</span>
             </div>
-
-            <form id="loginForm" novalidate>
-              <div class="input-group">
-                <input type="email" class="input" id="loginEmail" placeholder="Email address">
-              </div>
-
-              <div class="input-group">
-                <input type="password" class="input" id="loginPassword" placeholder="Password">
-              </div>
-
-              <div class="options">
-                <label class="remember">
-                  <input type="checkbox">
-                  <span>Remember me</span>
-                </label>
-                <a href="#">Forgot password?</a>
-              </div>
-
-              <button type="submit" class="submit-btn">Login Now</button>
-            </form>
+            <div class="stat">
+              <span class="stat-number">5000+</span>
+              <span class="stat-label">Pacientes Atendidos</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">98%</span>
+              <span class="stat-label">Satisfacción del Cliente</span>
+            </div>
           </div>
         </div>
-
-        <div class="panel signup-panel">
-          <div class="form-box">
-            <h2 class="form-title">Create Account</h2>
-            <p class="form-subtitle">Sign up and begin your experience</p>
-
-            <div class="message" id="signupMessage">
-              <div class="icon">!</div>
-              <div class="text">
-                <strong>Alert</strong>
-                <span>Message appears here.</span>
-              </div>
-            </div>
-
-            <form id="signupForm" novalidate>
-              <div class="row">
-                <div class="input-group">
-                  <input type="text" class="input" id="firstName" placeholder="First name">
-                </div>
-                <div class="input-group">
-                  <input type="text" class="input" id="lastName" placeholder="Last name">
-                </div>
-              </div>
-
-              <div class="input-group">
-                <input type="email" class="input" id="signupEmail" placeholder="Email address">
-              </div>
-
-              <div class="input-group">
-                <input type="password" class="input" id="signupPassword" placeholder="Create password">
-              </div>
-
-              <div class="input-group">
-                <input type="password" class="input" id="confirmPassword" placeholder="Confirm password">
-              </div>
-
-              <div class="options" style="justify-content:flex-start;">
-                <label class="remember">
-                  <input type="checkbox" id="termsCheck">
-                  <span>I agree to the terms & conditions</span>
-                </label>
-              </div>
-
-              <button type="submit" class="submit-btn">Create Account</button>
-            </form>
+        <div class="about-image">
+          <div style="height: 400px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-paw" style="font-size: 5rem; color: white; opacity: 0.8;"></i>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Inicio</a>
+        <a href="#">Servicios</a>
+        <a href="#">Sobre Nosotros</a>
+        <a href="#">Blog</a>
+        <a href="components/registerLogin/registerLogin.html">Iniciar Sesión</a>
+      </div>
+      <p>&copy; 2026 VetCare - Clínica Veterinaria. Todos los derechos reservados.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab facebook-f"></i></a>
+        <a href="#"><i class="fab twitter"></i></a>
+        <a href="#"><i class="fab instagram"></i></a>
+        <a href="#"><i class="fab youtube"></i></a>
+      </div>
+    </div>
+  </footer>
   <script src="components/registerLogin/registerLogin.js"></script>
 </body>
 </html>

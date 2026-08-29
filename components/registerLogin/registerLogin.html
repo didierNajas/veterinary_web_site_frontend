@@ -1,10 +1,20 @@
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<div class="scene">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veterinary Web Site - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../dashboard/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="scene">
     <div class="wrapper">
       <input type="checkbox" id="toggle">
-
-      <!-- Sliding Side Panel -->
 
       <div class="slider">
         <div class="slider-login">
@@ -26,10 +36,7 @@
         </div>
       </div>
 
-      
       <div class="forms">
-
-        <!-- LOGIN -->
         <div class="panel login-panel">
           <div class="form-box">
             <h2 class="form-title">Iniciar Sesión</h2>
@@ -62,31 +69,9 @@
 
               <button type="submit" class="submit-btn">Login Now</button>
             </form>
-
-            <div class="socials">
-              <p>or continue with</p>
-              <div class="social-icons">
-                <a href="#" class="social-icon google">
-                  <i class="fab fa-google"></i>
-                </a>
-                <a href="#" class="social-icon facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-icon instagram">
-                  <i class="fab fa-instagram"></i>
-                
-                <a href="#" class="social-icon facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-icon instagram">
-                  <i class="fab fa-instagram"></i>
-                </a>
-              </div>
-            </div>
           </div>
         </div>
 
-        <!-- SIGNUP -->
         <div class="panel signup-panel">
           <div class="form-box">
             <h2 class="form-title">Create Account</h2>
@@ -115,41 +100,28 @@
               </div>
 
               <div class="input-group">
-                <input type="password" class="input" id="signupPassword" placeholder="Create password">
+                <input type="password" class="input" id="signupPassword" placeholder="Password">
               </div>
 
               <div class="input-group">
-                <input type="password" class="input" id="confirmPassword" placeholder="Confirm password">
+                <input type="password" class="input" id="confirmPassword" placeholder="Confirm Password">
               </div>
 
-              <div class="options" style="justify-content:flex-start;">
+              <div class="options">
                 <label class="remember">
                   <input type="checkbox" id="termsCheck">
-                  <span>I agree to the terms & conditions</span>
+                  <span>I agree to the terms &amp; conditions</span>
                 </label>
+                <a href="#">Terms and conditions</a>
               </div>
 
               <button type="submit" class="submit-btn">Create Account</button>
             </form>
-
-            <div class="socials">
-              <p>or sign up with</p>
-              <div class="social-icons">
-                <a href="#" class="social-icon google">
-                  <i class="fab fa-google"></i>
-                </a>
-                <a href="#" class="social-icon facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-icon instagram">
-                  <i class="fab fa-instagram"></i>
-                </a>
-              </div>
-            </div>
           </div>
         </div>
-
       </div>
     </div>
-    <script src="../registerLogin.js"></script>
   </div>
+  <script src="registerLogin.js"></script>
+</body>
+</html>
