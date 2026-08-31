@@ -94,13 +94,13 @@ loginForm.addEventListener("submit", async function (e) {
       loginMessage,
       "error",
       "Login Failed",
-      "Please enter a valid email and a password with at least 6 characters."
+      "Porfavor inserta un email valido y una contraseña de maximo 6 caracteres."
     );
     return;
   }
 
   try {
-    showMessage(loginMessage, "info", "Logging In", "Please wait...");
+    showMessage(loginMessage, "info", "Iniciando Sesion", "Please wait...");
 
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
@@ -119,8 +119,8 @@ loginForm.addEventListener("submit", async function (e) {
       showMessage(
         loginMessage,
         "success",
-        "Login Successful",
-        "Welcome back! Redirecting..."
+        "Sesion Iniciada Correctamente",
+        "Bienvenido de nuevo! Redirigiendo..."
       );
       loginForm.reset();
       setTimeout(() => {
@@ -131,7 +131,7 @@ loginForm.addEventListener("submit", async function (e) {
       showMessage(
         loginMessage,
         "error",
-        "Login Failed",
+        "Inicio Sesion Fallido",
         await readErrorMessage(response)
       );
     }
@@ -201,14 +201,14 @@ signupForm.addEventListener("submit", async function (e) {
     showMessage(
       signupMessage,
       "error",
-      "Sign Up Failed",
-      "Please fill all fields correctly, match passwords, and accept the terms & conditions."
+      "Sesion Nueva Fallida",
+      "Porfavor revisa las casillas vacias correctamente,  contraseña iguales, y acepta terminos y condiciones"
     );
     return;
   }
 
   try {
-    showMessage(signupMessage, "info", "Creating Account", "Please wait...");
+    showMessage(signupMessage, "info", "Creando Cuenta", "Please wait...");
 
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
@@ -229,8 +229,8 @@ signupForm.addEventListener("submit", async function (e) {
       showMessage(
         signupMessage,
         "success",
-        "Account Created",
-        "Your account has been created successfully. Redirecting..."
+        "Cuenta Creada",
+        "Tu cuenta ha sido creada correctamente. Redirigiendo..."
       );
       signupForm.reset();
       setTimeout(() => {
@@ -241,7 +241,7 @@ signupForm.addEventListener("submit", async function (e) {
       showMessage(
         signupMessage,
         "error",
-        "Sign Up Failed",
+        "Sesion Nueva Fallida",
         await readErrorMessage(response)
       );
     }
