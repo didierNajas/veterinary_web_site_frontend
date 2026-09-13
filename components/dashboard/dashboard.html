@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VetCare - Dashboard</title>
+  <title>VetCare - dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,9 +26,8 @@
       <div class="actions">
         <button id="refreshBtn" type="button" class="btn btn-primary">Actualizar perfil</button>
       </div>
-    </section>
+    
 
-    <section class="card">
       <h2>Cambiar password</h2>
       <p class="hint">Actualiza tu contraseña. Mínimo 6 caracteres.</p>
       <form id="changePasswordForm" class="form-grid" novalidate>
@@ -43,7 +42,45 @@
         <button id="changePasswordBtn" type="submit" class="btn btn-primary">Cambiar password</button>
       </form>
       <p id="passwordMessage" class="message" hidden></p>
+ </section>
+    <section class="card">
+      <h2>Acceso rápido</h2>
+      <p class="hint">Acceso directo a las secciones de gestión</p>
+      <div class="actions">
+        <a style="background: var(--primary); color: rgb(250, 246, 246);" href="/components/pet/pet.html" class="btn btn-secondary">Gestión de mascotas</a>
+      </div>
+      <div>
+        --------------------------------------------
+      </div>
+      <section id="propietariosSection" class="card" hidden>
+      <h2>Propietarios y sus mascotas</h2>
+      <p class="hint">Lista de propietarios con sus mascotas registradas</p>
+      <div class="actions">
+        <button id="reloadPropietariosBtn" type="button" class="btn btn-primary">Recargar propietarios</button>
+        <a style="background: var(--primary); color: rgb(250, 246, 246);" href="/components/propietario/propietario.html" class="btn btn-secondary">Gestion de propietarios</a>
+      </div>
+      <p id="propietarioMessage" class="message" hidden></p>
+      <div class="table-wrap">
+        <table id="propietariosTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
+              <th>Mascotas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="propietariosTableBody">
+            <tr><td colspan="7">Cargando propietarios...</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
+
+    <div>--------------------------------------------</div>
 
     <section id="adminSection" class="card" hidden>
       <h2>Administración de usuarios</h2>
@@ -111,7 +148,7 @@
       </div>
     </form>
   </dialog>
-
+</section>
   <script src="/components/dashboard/dashboard.js"></script>
 </body>
 </html>

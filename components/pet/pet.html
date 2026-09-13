@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetCare - Mascotas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pet.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Gestión de Mascotas</h1>
+        <p id="welcomeText">Cargando mascotas...</p>
+      </div>
+      <button id="addMascotaBtn" type="button" class="btn btn-primary">Agregar Mascota</button>
+      <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+    </header>
+
+    <section class="card">
+      <div class="table-wrap">
+        <table id="mascotasTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Raza</th>
+              <th>Sexo</th>
+              <th>Peso</th>
+              <th>Fecha Nacimiento</th>
+              <th>Propietario</th>
+              <th>Fecha Registro</th>
+              <th>Activo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="mascotasTableBody">
+            <tr><td colspan="11">Cargando mascotas...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Modal for adding/editing mascota -->
+    <dialog id="mascotaDialog">
+      <form id="mascotaForm" class="dialog-form">
+        <h3 id="dialogTitle">Agregar Mascota</h3>
+        <input type="hidden" id="mascotaId">
+        <label>
+          Nombre
+          <input type="text" id="nombre" required>
+        </label>
+        <label>
+          Especie
+          <input type="text" id="especie">
+        </label>
+        <label>
+          Raza
+          <input type="text" id="raza">
+        </label>
+        <label>
+          Sexo
+          <select id="sexo" required>
+            <option value="">Seleccione sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+          </select>
+        </label>
+        <label>
+          Peso (kg)
+          <input type="number" id="peso" step="0.1" min="0" required>
+        </label>
+        <label>
+          Fecha de Nacimiento
+          <input type="date" id="fechaNacimiento">
+        </label>
+        <!-- Propietario Selection -->
+        <div id="propietarioSelection">
+          <label>
+            <input type="radio" name="propietarioOption" value="existing" checked> Usar propietario existente
+          </label>
+          <label>
+            <input type="radio" name="propietarioOption" value="new"> Crear nuevo propietario
+          </label>
+        </div>
+
+        <!-- Existing Propietario ID -->
+        <div id="existingPropietarioField">
+          <label>
+            ID del Propietario
+            <input type="number" id="idPropietario" min="1" required>
+          </label>
+        </div>
+
+        <!-- New Propietario Details -->
+        <div id="newPropietarioFields" style="display: none;">
+          <label>
+            Nombre del Propietario
+            <input type="text" id="propietarioNombre" required>
+          </label>
+          <label>
+            Apellido del Propietario
+            <input type="text" id="propietarioApellido" required>
+          </label>
+          <label>
+            Teléfono
+            <input type="tel" id="propietarioTelefono">
+          </label>
+          <label>
+            Dirección
+            <input type="text" id="propietarioDireccion" required>
+          </label>
+          <label>
+            Fecha de Registro
+            <input type="datetime-local" id="propietarioFechaRegistro">
+          </label>
+          <label>
+            Activo
+            <input type="checkbox" id="propietarioActivo" checked>
+          </label>
+        </div>
+        <label>
+          ID del Veterinario (opcional)
+          <input type="number" id="idVeterinario" min="1">
+        </label>
+        <label>
+          Fecha de Registro
+          <input type="datetime-local" id="fechaRegistro">
+        </label>
+        <label>
+          Activo
+          <input type="checkbox" id="activo">
+        </label>
+        <div class="dialog-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" id="saveBtn" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+      <p id="mascotaMessage" class="message" hidden></p>
+    </dialog>
+  </main>
+
+  <script src="pet.js" type="module"></script>
+</body>
+</html>

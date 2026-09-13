@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VetCare - Propietarios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="propietario.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Gestión de Propietarios</h1>
+        <p id="welcomeText">Cargando propietarios...</p>
+      </div>
+      <button id="addPropietarioBtn" type="button" class="btn btn-primary">Agregar Propietario</button>
+      <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+    </header>
+
+    <section class="card">
+      <div class="table-wrap">
+        <table id="propietariosTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
+              <th>Fecha Registro</th>
+              <th>Activo</th>
+              <th>Mascotas</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="propietariosTableBody">
+            <tr><td colspan="9">Cargando propietarios...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Modal for adding/editing propietario -->
+    <dialog id="propietarioDialog">
+      <form id="propietarioForm" class="dialog-form">
+        <h3 id="dialogTitle">Agregar Propietario</h3>
+        <input type="hidden" id="propietarioId">
+        <label>
+          Nombre
+          <input type="text" id="nombre" required>
+        </label>
+        <label>
+          Apellido
+          <input type="text" id="apellido" required>
+        </label>
+        <label>
+          Teléfono
+          <input type="tel" id="telefono">
+        </label>
+        <label>
+          Dirección
+          <input type="text" id="direccion" required>
+        </label>
+        <label>
+          Fecha de Registro
+          <input type="datetime-local" id="fechaRegistro">
+        </label>
+        <label>
+          Activo
+          <input type="checkbox" id="activo">
+        </label>
+        <div class="dialog-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" id="saveBtn" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+      <p id="propietarioMessage" class="message" hidden></p>
+    </dialog>
+  </main>
+
+  <script src="propietario.js" type="module"></script>
+</body>
+</html>

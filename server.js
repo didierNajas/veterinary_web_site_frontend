@@ -18,6 +18,14 @@ app.get("/dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "components", "dashboard", "dashboard.html"));
 });
 
+app.get("/pet.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "components", "pet", "pet.html"));
+});
+
+app.get("/propietario.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "components", "propietario", "propietario.html"));
+});
+
 app.listen(PORT, () => {
   console.log(`Frontend running on http://localhost:${PORT}`);
   console.log(`Backend expected at http://localhost:8080`);

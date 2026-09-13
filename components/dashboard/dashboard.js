@@ -11,6 +11,91 @@ const editMessage = document.getElementById("editMessage");
 
 let currentUser = null;
 let usersCache = [];
+const propietariosSection = document.getElementById("propietariosSection");
+const propietarioMessage = document.getElementById("propietarioMessage");
+const propietariosTableBody = document.getElementById("propietariosTableBody");
+
+async function loadPropietariosConMascotas() {
+  hideMessage(propietarioMessage);
+  propietariosTableBody.innerHTML = `<tr><td colspan="7">Cargando propietarios y mascotas...</td></tr>`;
+
+  try {
+    // Fetch propietarios
+    const propietariosResponse = await fetch(`${API_BASE_URL}/propietarios`, {
+      headers: authHeaders(),
+    });
+    
+    if (!propietariosResponse.ok) {
+      throw new Error(`Error loading propietarios: ${propietariosResponse.status}`);
+    }
+    
+    const propietarios = await propietariosResponse.json();
+    
+    // Fetch mascotas to associate with propietarios
+    const mascotasResponse = await fetch(`${API_BASE_URL}/mascotas`, {
+      headers: authHeaders(),
+    });
+    
+    if (!mascotasResponse.ok) {
+      throw new Error(`Error loading mascotas: ${mascotasResponse.status}`);
+    }
+    
+    const mascotas = await mascotasResponse.json();
+    
+    // Group mascotas by propietario ID
+    const mascotasPorPropietario = {};
+    mascotas.forEach(mascota => {
+      const propietarioId = mascota.idPropietario;
+      if (!mascotasPorPropietario[propietarioId]) {
+        mascotasPorPropietario[propietarioId] = [];
+      }
+      mascotasPorPropietario[propietarioId].push(mascota);
+    });
+    
+    // Combine data and render
+    renderPropietariosTable(propietarios, mascotasPorPropietario);
+  } catch (error) {
+    propietariosTableBody.innerHTML = `<tr><td colspan="7">Error cargando datos: ${error.message}</td></tr>`;
+    showMessage(propietarioMessage, "error", `Error cargando propietarios: ${error.message}`);
+    console.error(error);
+  }
+}
+
+function renderPropietariosTable(propietarios, mascotasPorPropietario) {
+  if (!propietarios || propietarios.length === 0) {
+    propietariosTableBody.innerHTML = `<tr><td colspan="7">No hay propietarios registrados</td></tr>`;
+    return;
+  }
+
+  propietariosTableBody.innerHTML = propietarios
+    .map(
+      (p) => {
+        const mascotas = mascotasPorPropietario[p.id] || [];
+        const mascotasList = mascotas
+          .map(m => `${m.nombre} (${m.especie || ""})`)
+          .join(", ");
+        const mascotasCount = mascotas.length;
+        const mascotasDisplay = mascotasCount > 0 
+          ? `${mascotasCount} mascota${mascotasCount !== 1 ? 's' : ''}: ${mascotasList}` 
+          : "Sin mascotas";
+        
+        return `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.nombre}</td>
+            <td>${p.apellido}</td>
+            <td>${p.telefono || "-"}</td>
+            <td>${p.direccion || "-"}</td>
+            <td>${mascotasDisplay}</td>
+            <td>
+              <!-- Actions could be added here if needed -->
+            </td>
+          </tr>
+        `;
+      }
+    )
+    .join("");
+}
 
 function getToken() {
   return localStorage.getItem("token") || localStorage.getItem("authToken");
@@ -380,7 +465,21 @@ document.getElementById("refreshBtn").addEventListener("click", loadProfile);
 document.getElementById("logoutBtn").addEventListener("click", logout);
 document.getElementById("changePasswordForm").addEventListener("submit", changePassword);
 document.getElementById("reloadUsersBtn").addEventListener("click", loadUsers);
+document.getElementById("reloadPropietariosBtn").addEventListener("click", loadPropietariosConMascotas);
 document.getElementById("editUserForm").addEventListener("submit", saveEditedUser);
 document.getElementById("cancelEditBtn").addEventListener("click", () => editUserDialog.close());
 
-loadProfile();
+// Load profile and handle propietarios section visibility based on role
+loadProfile().then(() => {
+  // Determine if user is ADMIN or VETERINARIO
+  const isAdminOrVet = currentUser && (isAdmin(currentUser) || currentUser.role?.toUpperCase() === "ADMIN");
+
+  // Show/hide propietarios section
+  if (isAdminOrVet || currentUser.role?.toUpperCase() === "VETERINARIAN") {
+    propietariosSection.hidden = false;
+    loadPropietariosConMascotas();
+  } else {
+    propietariosSection.hidden = true;
+  }
+
+});
