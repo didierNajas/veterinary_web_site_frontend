@@ -86,14 +86,14 @@ function renderPropietarios() {
     .map(
       (p) => {
         // Find mascotas for this propietario
-        const propietarioMascotas = mascotas.filter(m => m.idPropietario === p.id);
+        const propietarioMascotas = mascotas.filter(m => m.idPropietario === p.idPropietario);
         const mascotasInfo = propietarioMascotas.length > 0 
           ? propietarioMascotas.map(m => m.nombre).join(", ")
           : "-";
         
         return `
       <tr>
-        <td>${p.id}</td>
+        <td>${p.idPropietario}</td>
         <td>${p.nombre}</td>
         <td>${p.apellido}</td>
         <td>${p.telefono || "-"}</td>
@@ -102,8 +102,8 @@ function renderPropietarios() {
         <td>${p.activo ? "Sí" : "No"}</td>
         <td>${mascotasInfo}</td>
         <td>
-          <button class="btn btn-sm btn-primary edit-btn" data-id="${p.id}">Editar</button>
-          <button class="btn btn-sm btn-danger delete-btn" data-id="${p.id}">Eliminar</button>
+          <button class="btn btn-sm btn-primary edit-btn" data-id="${p.idPropietario}">Editar</button>
+          <button class="btn btn-sm btn-danger delete-btn" data-id="${p.idPropietario}">Eliminar</button>
         </td>
       </tr>
     `;
@@ -123,7 +123,7 @@ function renderPropietarios() {
 function openDialog(isEdit = false, propietario = null) {
   if (isEdit && propietario) {
     dialogTitle.textContent = "Editar Propietario";
-    editingId = propietario.id;
+    editingId = propietario.idPropietario;
     propietarioForm.nombre.value = propietario.nombre;
     propietarioForm.apellido.value = propietario.apellido;
     propietarioForm.telefono.value = propietario.telefono || "";

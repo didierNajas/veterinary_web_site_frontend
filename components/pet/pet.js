@@ -113,12 +113,12 @@ function renderMascotas() {
     .map(
       (m) => {
         // Find the propietario by idPropietario
-        const propietario = propietarios.find(p => p.id === m.idPropietario);
+        const propietario = propietarios.find(p => p.idPropietario === m.idPropietario);
         const propietarioNombre = propietario ? `${propietario.nombre} ${propietario.apellido}` : `-`;
         
         return `
           <tr>
-            <td>${m.id}</td>
+            <td>${m.idMascota}</td>
             <td>${m.nombre}</td>
             <td>${m.especie || "-"}</td>
             <td>${m.raza || "-"}</td>
@@ -129,8 +129,8 @@ function renderMascotas() {
             <td>${m.fechaRegistro ? new Date(m.fechaRegistro).toLocaleString() : "-"}</td>
             <td>${m.activo ? "Sí" : "No"}</td>
             <td>
-              <button class="btn btn-sm btn-primary edit-btn" data-id="${m.id}">Editar</button>
-              <button class="btn btn-sm btn-danger delete-btn" data-id="${m.id}">Eliminar</button>
+              <button class="btn btn-sm btn-primary edit-btn" data-id="${m.idMascota}">Editar</button>
+              <button class="btn btn-sm btn-danger delete-btn" data-id="${m.idMascota}">Eliminar</button>
             </td>
           </tr>
         `;
@@ -150,7 +150,7 @@ function renderMascotas() {
 function openDialog(isEdit = false, mascota = null) {
   if (isEdit && mascota) {
     dialogTitle.textContent = "Editar Mascota";
-    editingId = mascota.id;
+    editingId = mascota.idMascota;
     mascotaForm.nombre.value = mascota.nombre;
     mascotaForm.especie.value = mascota.especie || "";
     mascotaForm.raza.value = mascota.raza || "";
@@ -165,10 +165,56 @@ function openDialog(isEdit = false, mascota = null) {
       .toISOString()
       .slice(0, 16);
     mascotaForm.activo.checked = mascota.activo;
+    
+    // Handle propietario toggle based on whether we're editing
+    const existingRadio = document.querySelector('input[name="propietarioOption"][value="existing"]');
+    const newRadio = document.querySelector('input[name="propietarioOption"][value="new"]');
+    const existingField = document.getElementById("existingPropietarioField");
+    const newFields = document.getElementById("newPropietarioFields");
+    const propietarioNombreInput = document.getElementById("propietarioNombre");
+    const propietarioApellidoInput = document.getElementById("propietarioApellido");
+    const propietarioDireccionInput = document.getElementById("propietarioDireccion");
+    
+    if (existingRadio && newRadio && existingField && newFields) {
+      // Always use existing propietario option when editing
+      existingRadio.checked = true;
+      newRadio.checked = false;
+      existingField.style.display = "block";
+      newFields.style.display = "none";
+      // Clear new propietario fields and remove required attributes to prevent validation issues
+      propietarioNombreInput.value = "";
+      propietarioNombreInput.removeAttribute("required");
+      propietarioApellidoInput.value = "";
+      propietarioApellidoInput.removeAttribute("required");
+      propietarioDireccionInput.value = "";
+      propietarioDireccionInput.removeAttribute("required");
+      document.getElementById("propietarioTelefono").value = "";
+      document.getElementById("propietarioFechaRegistro").value = "";
+      document.getElementById("propietarioActivo").checked = true;
+    }
   } else {
     dialogTitle.textContent = "Agregar Mascota";
     editingId = null;
     mascotaForm.reset();
+    // Reset propietario toggle to default state for new mascota
+    const existingRadio = document.querySelector('input[name="propietarioOption"][value="existing"]');
+    const newRadio = document.querySelector('input[name="propietarioOption"][value="new"]');
+    const existingField = document.getElementById("existingPropietarioField");
+    const newFields = document.getElementById("newPropietarioFields");
+    
+    if (existingRadio && newRadio && existingField && newFields) {
+      existingRadio.checked = true;
+      newRadio.checked = false;
+      existingField.style.display = "block";
+      newFields.style.display = "none";
+      // Clear new propietario fields
+      document.getElementById("propietarioNombre").value = "";
+      document.getElementById("propietarioApellido").value = "";
+      document.getElementById("propietarioTelefono").value = "";
+      document.getElementById("propietarioDireccion").value = "";
+      document.getElementById("propietarioFechaRegistro").value = "";
+      document.getElementById("propietarioActivo").checked = true;
+    }
   }
   mascotaDialog.showModal();
 }
@@ -214,7 +260,7 @@ async function saveMascota(e) {
       if (!response.ok) throw new Error("Failed to create propietario");
       
       const newPropietario = await response.json();
-      propietarioId = newPropietario.id;
+      propietarioId = newPropietario.idPropietario;
       
       showMessage(mascotaMessage, "success", "Propietario creado correctamente");
     } catch (error) {
@@ -224,18 +270,70 @@ async function saveMascota(e) {
     }
   }
   
+  // Trim string values and validate
+  const nombre = mascotaForm.nombre.value.trim();
+  const especie = mascotaForm.especie.value.trim();
+  const raza = mascotaForm.raza.value.trim();
+  const sexo = mascotaForm.sexo.value;
+  const pesoStr = mascotaForm.peso.value.trim();
+  const fechaNacimientoInput = mascotaForm.fechaNacimiento.value;
+  const fechaRegistroInput = mascotaForm.fechaRegistro.value;
+  
+  // Basic validation
+  if (!nombre) {
+    showMessage(mascotaMessage, "danger", "El nombre de la mascota es requerido");
+    return;
+  }
+  
+  if (!especie) {
+    showMessage(mascotaMessage, "danger", "La especie es requerida");
+    return;
+  }
+  
+  if (!sexo) {
+    showMessage(mascotaMessage, "danger", "El sexo es requerido");
+    return;
+  }
+  
+  const peso = parseFloat(pesoStr);
+  if (isNaN(peso) || peso <= 0) {
+    showMessage(mascotaMessage, "danger", "Por favor ingrese un peso válido mayor a cero");
+    return;
+  }
+  
+  if (!fechaNacimientoInput) {
+    showMessage(mascotaMessage, "danger", "La fecha de nacimiento es requerida");
+    return;
+  }
+  
+  if (!fechaRegistroInput) {
+    showMessage(mascotaMessage, "danger", "La fecha de registro es requerida");
+    return;
+  }
+  
+  // Convert dates to ISO format with time for LocalDateTime compatibility
+  const fechaNacimiento = fechaNacimientoInput ? new Date(fechaNacimientoInput + "T00:00:00").toISOString() : "";
+  const fechaRegistro = fechaRegistroInput ? new Date(fechaRegistroInput + ":00").toISOString() : "";
+  
+  // Handle optional integer fields properly (check for empty string, not just falsy)
+  const idVeterinarioStr = mascotaForm.idVeterinario.value.trim();
+  const idVeterinario = idVeterinarioStr !== "" ? parseInt(idVeterinarioStr) : null;
+  
   const mascotaData = {
-    nombre: mascotaForm.nombre.value,
-    especie: mascotaForm.especie.value,
-    raza: mascotaForm.raza.value,
-    sexo: mascotaForm.sexo.value,
-    peso: parseFloat(mascotaForm.peso.value),
-    fechaNacimiento: mascotaForm.fechaNacimiento.value,
+    nombre: nombre,
+    especie: especie,
+    raza: raza,
+    sexo: sexo,
+    peso: peso,
+    fechaNacimiento: fechaNacimiento,
     idPropietario: propietarioId,
-    idVeterinario: mascotaForm.idVeterinario.value ? parseInt(mascotaForm.idVeterinario.value) : null,
-    fechaRegistro: mascotaForm.fechaRegistro.value,
+    idVeterinario: idVeterinario,
+    fechaRegistro: fechaRegistro,
     activo: mascotaForm.activo.checked,
   };
+
+  console.log("Saving mascota with data:", mascotaData);
+  console.log("Editing ID:", editingId);
 
   try {
     let response;
@@ -253,19 +351,26 @@ async function saveMascota(e) {
       });
     }
 
-    if (!response.ok) throw new Error("Failed to save mascota");
+    console.log("Response status:", response.status);
+    console.log("Response statusText:", response.statusText);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error("Backend response:", errorData);
+      throw new Error(`Failed to save mascota: ${response.status} ${response.statusText} - ${errorData}`);
+    }
     await loadMascotas();
     closeDialog();
     showMessage(mascotaMessage, "success", "Mascota guardada correctamente");
   } catch (error) {
     console.error(error);
-    showMessage(mascotaMessage, "danger", "Error al guardar mascota");
+    showMessage(mascotaMessage, "danger", `Error al guardar mascota: ${error.message}`);
   }
 }
 
-async function editMascota(id) {
+async function editMascota(idMascota) {
   try {
-    const response = await fetch(`${API_BASE_URL}/mascotas/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/mascotas/${idMascota}`, {
       headers: authHeaders(),
     });
     if (!response.ok) throw new Error("Failed to load mascota");

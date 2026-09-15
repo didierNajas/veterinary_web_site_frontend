@@ -70,7 +70,7 @@ function renderPropietariosTable(propietarios, mascotasPorPropietario) {
   propietariosTableBody.innerHTML = propietarios
     .map(
       (p) => {
-        const mascotas = mascotasPorPropietario[p.id] || [];
+        const mascotas = mascotasPorPropietario[p.idPropietario] || [];
         const mascotasList = mascotas
           .map(m => `${m.nombre} (${m.especie || ""})`)
           .join(", ");
@@ -81,7 +81,7 @@ function renderPropietariosTable(propietarios, mascotasPorPropietario) {
         
         return `
           <tr>
-            <td>${p.id}</td>
+            <td>${p.idPropietario}</td>
             <td>${p.nombre}</td>
             <td>${p.apellido}</td>
             <td>${p.telefono || "-"}</td>
