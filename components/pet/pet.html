@@ -50,22 +50,22 @@
     <dialog id="mascotaDialog">
       <form id="mascotaForm" class="dialog-form">
         <h3 id="dialogTitle">Agregar Mascota</h3>
-        <input type="hidden" id="mascotaId">
+        <input type="hidden" id="mascotaId" name="mascotaId">
         <label>
           Nombre
-          <input type="text" id="nombre" required>
+          <input type="text" id="nombre" name="nombre" required>
         </label>
         <label>
           Especie
-          <input type="text" id="especie">
+          <input type="text" id="especie" name="especie">
         </label>
         <label>
           Raza
-          <input type="text" id="raza">
+          <input type="text" id="raza" name="raza">
         </label>
         <label>
           Sexo
-          <select id="sexo" required>
+          <select id="sexo" name="sexo" required>
             <option value="">Seleccione sexo</option>
             <option value="Macho">Macho</option>
             <option value="Hembra">Hembra</option>
@@ -73,11 +73,11 @@
         </label>
         <label>
           Peso (kg)
-          <input type="number" id="peso" step="0.1" min="0" required>
+          <input type="number" id="peso" name="peso" step="0.1" min="0" required>
         </label>
         <label>
           Fecha de Nacimiento
-          <input type="date" id="fechaNacimiento">
+          <input type="date" id="fechaNacimiento" name="fechaNacimiento">
         </label>
         <!-- Propietario Selection -->
         <div id="propietarioSelection">
@@ -93,7 +93,7 @@
         <div id="existingPropietarioField">
           <label>
             ID del Propietario
-            <input type="number" id="idPropietario" min="1" required>
+            <input type="number" id="idPropietario" name="idPropietario" min="1" required>
           </label>
         </div>
 
@@ -101,40 +101,40 @@
         <div id="newPropietarioFields" style="display: none;">
           <label>
             Nombre del Propietario
-            <input type="text" id="propietarioNombre" required>
+            <input type="text" id="propietarioNombre" name="propietarioNombre">
           </label>
           <label>
             Apellido del Propietario
-            <input type="text" id="propietarioApellido" required>
+            <input type="text" id="propietarioApellido" name="propietarioApellido" required>
           </label>
           <label>
             Teléfono
-            <input type="tel" id="propietarioTelefono">
+            <input type="tel" id="propietarioTelefono" name="propietarioTelefono">
           </label>
           <label>
             Dirección
-            <input type="text" id="propietarioDireccion" required>
+            <input type="text" id="propietarioDireccion" name="propietarioDireccion" required>
           </label>
           <label>
             Fecha de Registro
-            <input type="datetime-local" id="propietarioFechaRegistro">
+            <input type="datetime-local" id="propietarioFechaRegistro" name="propietarioFechaRegistro">
           </label>
           <label>
             Activo
-            <input type="checkbox" id="propietarioActivo" checked>
+            <input type="checkbox" id="propietarioActivo" name="propietarioActivo" checked>
           </label>
         </div>
         <label>
           ID del Veterinario (opcional)
-          <input type="number" id="idVeterinario" min="1">
+          <input type="number" id="idVeterinario" name="idVeterinario" min="1">
         </label>
         <label>
           Fecha de Registro
-          <input type="datetime-local" id="fechaRegistro">
+          <input type="datetime-local" id="fechaRegistro" name="fechaRegistro">
         </label>
         <label>
           Activo
-          <input type="checkbox" id="activo">
+          <input type="checkbox" id="activo" name="activo">
         </label>
         <div class="dialog-actions">
           <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>

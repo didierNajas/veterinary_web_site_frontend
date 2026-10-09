@@ -33,11 +33,11 @@
       <form id="changePasswordForm" class="form-grid" novalidate>
         <label>
           Nueva contraseña
-          <input type="password" id="newPassword" autocomplete="new-password" placeholder="Nueva contraseña">
+          <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" placeholder="Nueva contraseña">
         </label>
         <label>
           Confirmar contraseña
-          <input type="password" id="confirmNewPassword" autocomplete="new-password" placeholder="Confirmar contraseña">
+          <input type="password" id="confirmNewPassword" name="confirmNewPassword" autocomplete="new-password" placeholder="Confirmar contraseña">
         </label>
         <button id="changePasswordBtn" type="submit" class="btn btn-primary">Cambiar password</button>
       </form>
@@ -112,7 +112,7 @@
   <dialog id="editUserDialog">
     <form id="editUserForm" class="dialog-form">
       <h3>Editar usuario</h3>
-      <input type="hidden" id="editUserId">
+      <input type="hidden" id="editUserId" name="editUserId">
       <label>
         Nombre completo
         <input type="text" id="editFullName" required>
@@ -139,7 +139,7 @@
       </label>
       <label>
         Nueva contraseña (opcional)
-        <input type="password" id="editPassword" placeholder="Dejar vacío para no cambiar">
+        <input type="password" id="editPassword" name="editPassword" placeholder="Dejar vacío para no cambiar">
       </label>
       <p id="editMessage" class="message" hidden></p>
       <div class="dialog-actions">

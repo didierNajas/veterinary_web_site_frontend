@@ -66,16 +66,33 @@ function setupPropietarioToggle() {
   const newRadio = document.querySelector('input[name="propietarioOption"][value="new"]');
   const existingField = document.getElementById("existingPropietarioField");
   const newFields = document.getElementById("newPropietarioFields");
+  const propietarioNombreInput = document.getElementById("propietarioNombre");
+  const propietarioApellidoInput = document.getElementById("propietarioApellido");
+  const propietarioDireccionInput = document.getElementById("propietarioDireccion");
   
-  if (existingRadio && newRadio) {
+  if (existingRadio && newRadio && existingField && newFields) {
+    // Set initial state: existing propietario selected by default
+    existingRadio.checked = true;
+    newRadio.checked = false;
+    existingField.style.display = "block";
+    newFields.style.display = "none";
+    // Remove required from new propietario fields when existing is selected
+    propietarioNombreInput.removeAttribute("required");
+    propietarioApellidoInput.removeAttribute("required");
+    propietarioDireccionInput.removeAttribute("required");
+    
+    // Add event listeners for changes
     existingRadio.addEventListener("change", () => {
       existingField.style.display = "block";
       newFields.style.display = "none";
-      // Clear new propietario fields when switching to existing
-      document.getElementById("propietarioNombre").value = "";
-      document.getElementById("propietarioApellido").value = "";
+      // Clear new propietario fields and remove required attributes when switching to existing
+      propietarioNombreInput.value = "";
+      propietarioNombreInput.removeAttribute("required");
+      propietarioApellidoInput.value = "";
+      propietarioApellidoInput.removeAttribute("required");
+      propietarioDireccionInput.value = "";
+      propietarioDireccionInput.removeAttribute("required");
       document.getElementById("propietarioTelefono").value = "";
-      document.getElementById("propietarioDireccion").value = "";
       document.getElementById("propietarioFechaRegistro").value = "";
       document.getElementById("propietarioActivo").checked = true;
     });
@@ -83,8 +100,11 @@ function setupPropietarioToggle() {
     newRadio.addEventListener("change", () => {
       existingField.style.display = "none";
       newFields.style.display = "block";
-      // Clear existing propietario ID when switching to new
+      // Clear existing propietario ID and add required attributes when switching to new
       document.getElementById("idPropietario").value = "";
+      propietarioNombreInput.setAttribute("required", "");
+      propietarioApellidoInput.setAttribute("required", "");
+      propietarioDireccionInput.setAttribute("required", "");
     });
   }
 }
@@ -201,21 +221,27 @@ function openDialog(isEdit = false, mascota = null) {
     const newRadio = document.querySelector('input[name="propietarioOption"][value="new"]');
     const existingField = document.getElementById("existingPropietarioField");
     const newFields = document.getElementById("newPropietarioFields");
+      const propietarioNombreInput = document.getElementById("propietarioNombre");
+      const propietarioApellidoInput = document.getElementById("propietarioApellido");
+      const propietarioDireccionInput = document.getElementById("propietarioDireccion");
     
-    if (existingRadio && newRadio && existingField && newFields) {
-      existingRadio.checked = true;
-      newRadio.checked = false;
-      existingField.style.display = "block";
-      newFields.style.display = "none";
-      // Clear new propietario fields
-      document.getElementById("propietarioNombre").value = "";
-      document.getElementById("propietarioApellido").value = "";
-      document.getElementById("propietarioTelefono").value = "";
-      document.getElementById("propietarioDireccion").value = "";
-      document.getElementById("propietarioFechaRegistro").value = "";
-      document.getElementById("propietarioActivo").checked = true;
+      if (existingRadio && newRadio && existingField && newFields) {
+        existingRadio.checked = true;
+        newRadio.checked = false;
+        existingField.style.display = "block";
+        newFields.style.display = "none";
+        // Clear new propietario fields and remove required attributes
+        propietarioNombreInput.value = "";
+        propietarioNombreInput.removeAttribute("required");
+        propietarioApellidoInput.value = "";
+        propietarioApellidoInput.removeAttribute("required");
+        propietarioDireccionInput.value = "";
+        propietarioDireccionInput.removeAttribute("required");
+        document.getElementById("propietarioTelefono").value = "";
+        document.getElementById("propietarioFechaRegistro").value = "";
+        document.getElementById("propietarioActivo").checked = true;
+      }
     }
-  }
   mascotaDialog.showModal();
 }
 
@@ -408,4 +434,5 @@ logoutBtn.addEventListener("click", logout);
 document.addEventListener("DOMContentLoaded", async () => {
   await loadPropietarios();
   await loadMascotas();
+  setupPropietarioToggle();
 });

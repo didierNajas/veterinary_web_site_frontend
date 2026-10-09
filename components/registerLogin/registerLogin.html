@@ -53,16 +53,16 @@
 
             <form id="loginForm" novalidate>
               <div class="input-group">
-                <input type="email" class="input" id="loginEmail" placeholder="Dirección de correo electrónico">
+                <input type="email" class="input" id="loginEmail" name="loginEmail" placeholder="Dirección de correo electrónico">
               </div>
 
               <div class="input-group">
-                <input type="password" class="input" id="loginPassword" placeholder="Contraseña">
+                <input type="password" class="input" id="loginPassword" name="loginPassword" placeholder="Contraseña">
               </div>
 
               <div class="options">
                 <label class="remember">
-                  <input type="checkbox">
+                  <input type="checkbox" name="rememberMe">
                   <span>recordarme</span>
                 </label>
                 <a href="#">Olvidaste tu contraseña?</a>
@@ -89,10 +89,10 @@
             <form id="signupForm" novalidate>
               <div class="row">
                 <div class="input-group">
-                  <input type="text" class="input" id="firstName" placeholder="Nombre">
+                  <input type="text" class="input" id="firstName" name="firstName" placeholder="Nombre">
                 </div>
                 <div class="input-group">
-                  <input type="text" class="input" id="lastName" placeholder="Apellido">
+                  <input type="text" class="input" id="lastName" name="lastName" placeholder="Apellido">
                 </div>
               </div>
 
