@@ -265,7 +265,7 @@
     }
 
     .input.error{
-      border-color: var(--danger);
+      border-color: red;
       box-shadow:
         0 0 0 3px rgba(239, 68, 68, 0.2),
         0 4px 6px -1px rgba(0, 0, 0, 0.1),

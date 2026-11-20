@@ -93,7 +93,7 @@ loginForm.addEventListener("submit", async function (e) {
     showMessage(
       loginMessage,
       "error",
-      "Login Failed",
+      "Sesion Fallida",
       "Porfavor inserta un email valido y una contraseña de maximo 6 caracteres."
     );
     return;
@@ -134,6 +134,8 @@ loginForm.addEventListener("submit", async function (e) {
         "Inicio Sesion Fallido",
         await readErrorMessage(response)
       );
+      setInputState(loginEmail, "error");
+      setInputState(loginPassword, "error");
     }
   } catch (error) {
     showMessage(
@@ -244,6 +246,11 @@ signupForm.addEventListener("submit", async function (e) {
         "Sesion Nueva Fallida",
         await readErrorMessage(response)
       );
+      setInputState(firstName, "error");
+      setInputState(lastName, "error");
+      setInputState(signupEmail, "error");
+      setInputState(signupPassword, "error");
+      setInputState(confirmPassword, "error");
     }
   } catch (error) {
     showMessage(
