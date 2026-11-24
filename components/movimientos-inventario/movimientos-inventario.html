@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Movimientos de inventario | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">INVENTARIO</p>
+        <h1 data-i18n="heading">Movimientos de inventario</h1>
+        <p data-i18n="intro">Registra entradas y salidas de productos.</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences" aria-label="Preferencias">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" aria-current="page" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
+
+    <section class="card" aria-labelledby="movementsTitle">
+      <div class="card-heading">
+        <div>
+          <h2 id="movementsTitle" data-i18n="listHeading">Registro de movimientos</h2>
+          <p class="hint" data-i18n="listHint">El registro no calcula ni modifica una existencia acumulada.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadMovementsBtn" type="button" class="btn btn-secondary" data-i18n="refresh">Actualizar</button>
+          <button id="addMovementBtn" type="button" class="btn btn-primary" data-i18n="addMovement">Nuevo movimiento</button>
+        </div>
+      </div>
+      <p id="movementsMessage" class="message" role="status" aria-live="polite" hidden></p>
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de movimientos, desplazable">
+        <table>
+          <caption class="sr-only" data-i18n="tableCaption">Movimientos de inventario registrados</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="date">Fecha</th>
+              <th scope="col" data-i18n="product">Producto</th>
+              <th scope="col" data-i18n="type">Tipo</th>
+              <th scope="col" data-i18n="quantity">Cantidad</th>
+              <th scope="col" data-i18n="term">Término</th>
+              <th scope="col" data-i18n="reference">Referencia</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="movementsTableBody" aria-live="polite" aria-busy="true">
+            <tr><td class="state-row" colspan="8" data-i18n="loadingMovements">Cargando movimientos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="movementDialog" aria-labelledby="movementDialogTitle">
+    <form id="movementForm" class="dialog-form" novalidate>
+      <h2 id="movementDialogTitle" data-i18n="newMovement">Nuevo movimiento</h2>
+      <label>
+        <span data-i18n="product">Producto</span>
+        <select name="idProducto" required aria-required="true">
+          <option value="" data-i18n="chooseProduct">Selecciona un producto</option>
+        </select>
+      </label>
+      <label>
+        <span data-i18n="type">Tipo</span>
+        <select name="tipo" required aria-required="true">
+          <option value="entrada" data-i18n="entry">Entrada</option>
+          <option value="salida" data-i18n="exit">Salida</option>
+        </select>
+      </label>
+      <label>
+        <span data-i18n="quantity">Cantidad</span>
+        <input name="cantidad" type="number" min="1" step="1" value="1" required aria-required="true">
+      </label>
+      <label>
+        <span data-i18n="term">Término del movimiento</span>
+        <input name="termino" maxlength="150" required aria-required="true" data-i18n-placeholder="termPlaceholder" placeholder="Compra, devolución…">
+      </label>
+      <label>
+        <span data-i18n="referenceOptional">Referencia (opcional)</span>
+        <input name="referencia" maxlength="100" autocomplete="off">
+      </label>
+      <p id="movementFormMessage" class="message" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelMovementBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button id="saveMovementBtn" type="submit" class="btn btn-primary" data-i18n="save">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="movimientos-inventario.js"></script>
+</body>
+</html>

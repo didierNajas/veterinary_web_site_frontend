@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Términos de inventario | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">CATÁLOGO</p>
+        <h1 data-i18n="heading">Términos de inventario</h1>
+        <p data-i18n="intro">Administra las etiquetas disponibles para las facturas y movimientos.</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" aria-current="page" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
+
+    <section class="card">
+      <div class="card-heading">
+        <div>
+          <h2 data-i18n="listHeading">Términos de inventario</h2>
+          <p class="hint" data-i18n="listHint">Crea, consulta y actualiza los términos.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadInventarioBtn" type="button" class="btn btn-secondary" data-i18n="refreshList">Actualizar lista</button>
+          <button id="addTerminoBtn" type="button" class="btn btn-primary" data-i18n="newTerm">Nuevo término</button>
+        </div>
+      </div>
+      <p id="inventarioMessage" class="message" role="status" hidden></p>
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de términos, desplazable">
+        <table>
+          <caption class="sr-only" data-i18n="tableCaption">Términos registrados</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="term">Término</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="inventarioTableBody">
+            <tr><td class="state-row" colspan="3" data-i18n="loading">Cargando términos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="terminoDialog">
+    <form id="terminoForm" class="dialog-form">
+      <h2 id="terminoDialogTitle" data-i18n="newTerm">Nuevo término</h2>
+      <label>
+        <span data-i18n="term">Término</span>
+        <input type="text" name="termino" maxlength="150" required>
+      </label>
+      <p id="terminoFormMessage" class="message" role="status" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelTerminoBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-i18n="saveTerm">Guardar término</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="inventario.js"></script>
+</body>
+</html>

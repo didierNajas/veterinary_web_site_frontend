@@ -26,6 +26,10 @@ veterinary_web_site_frontend2/
 - **Form Validation**: Client-side validation for email, password strength, and required fields.
 - **UI Feedback**: Success and error messages for form submissions.
 - **Veterinary operations**: Appointment scheduling plus service and product catalogs in the authenticated dashboard.
+- **Inventory terms and veterinarian schedules**: Authenticated CRUD screens for inventory terms and veterinary availability.
+- **Billing and inventory operations**: Company, invoice, payment, and inventory-movement CRUD screens, organized into API services and page controllers.
+- **Accessible management states**: Loading, empty, retry/error, and success states; labeled forms, keyboard focus, and responsive tables and dialogs.
+- **Appearance and language preferences**: Light/dark theme and Spanish/English controls on management screens; preferences persist in local storage.
 
 ## Authentication Flow
 
@@ -70,8 +74,16 @@ const API_BASE_URL = "http://localhost:8080/api";
 - **POST `/auth/register`**: Registers a new user and returns a JWT token.
 - **GET/POST/PUT/DELETE `/servicios`**: Manages service catalog entries.
 - **GET/POST/PUT/DELETE `/productos`**: Manages products using category IDs from **GET `/categorias`**.
+- **GET/POST/PUT/DELETE `/inventario`**: Manages inventory terms.
+- **GET/POST/PUT/DELETE `/horarios-veterinarios`**: Manages veterinarian schedules and availability.
+- **GET/POST/PUT/DELETE `/companias`**: Manages company identity and contact details.
+- **GET/POST/PUT/DELETE `/facturas`**: Manages invoices and their product lines. The backend calculates line totals and tax from current product prices.
+- **GET/POST/PUT/DELETE `/pagos`**: Manages payments; the interface shows the remaining invoice balance and prevents exceeding it.
+- **GET/POST/PUT/DELETE `/movimientos-inventario`**: Manages product receipts and issues. These movements are records and do not update an aggregate stock balance.
 
-The dashboard links to service and product management for administrators and veterinarians. Products use the category list from the API, and appointments select active services from `/servicios`.
+The dashboard links to service, product, inventory, schedule, company, invoice, payment, and movement management for administrators and veterinarians. Products use the category list from the API, and appointments select active services from `/servicios`.
+
+The management pages follow a small layered structure: `components/common/api.js` handles authenticated HTTP and shared CRUD operations; each feature's `*-service.js` adapts its API; and the page module manages rendering, validation, and interaction. Shared preferences and catalog styles live in `components/common/`. The public home page and authenticated screens share the VetCare visual identity: Poppins typography, blue-to-cyan accents, pale backgrounds, and white cards.
 
 > **Note**: The backend must be running and accessible at the specified `API_BASE_URL` for the frontend to function correctly. The frontend does not include backend logic; it assumes a compatible API is available.
 

@@ -1,56 +1,73 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f7fb">
-  <title>Gestión de productos | VetCare</title>
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Productos | VetCare</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
   <main class="layout">
     <header class="topbar">
       <div>
-        <h1>Gestión de productos</h1>
-        <p id="welcomeText">Administra el catálogo y los valores unitarios.</p>
+        <p class="eyebrow" data-i18n="eyebrow">CATÁLOGO</p>
+        <h1 data-i18n="heading">Productos</h1>
+        <p id="welcomeText" data-i18n="intro">Administra el catálogo y los valores unitarios.</p>
       </div>
       <div class="topbar-actions">
-        <a href="../dashboard/dashboard.html" class="btn btn-secondary">Volver al dashboard</a>
-        <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
       </div>
     </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" aria-current="page" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
 
     <section class="card">
       <div class="card-heading">
         <div>
-          <h2>Productos</h2>
-          <p class="hint">Los productos desactivados se conservan en el historial.</p>
+          <h2 data-i18n="listHeading">Productos</h2>
+          <p class="hint" data-i18n="listHint">Los productos desactivados se conservan en el historial.</p>
         </div>
         <div class="actions">
-          <button id="reloadProductosBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
-          <button id="addProductoBtn" type="button" class="btn btn-primary">Nuevo producto</button>
+          <button id="reloadProductosBtn" type="button" class="btn btn-secondary" data-i18n="refresh">Actualizar lista</button>
+          <button id="addProductoBtn" type="button" class="btn btn-primary" data-i18n="addProduct">Nuevo producto</button>
         </div>
       </div>
       <p id="productoMessage" class="message" role="status" hidden></p>
-      <div class="table-wrap">
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de productos, desplazable">
         <table>
+          <caption class="sr-only" data-i18n="tableCaption">Productos registrados</caption>
           <thead>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Producto</th>
-              <th scope="col">Categoría</th>
-              <th scope="col">Valor de compra</th>
-              <th scope="col">Valor de venta</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="product">Producto</th>
+              <th scope="col" data-i18n="category">Categoría</th>
+              <th scope="col" data-i18n="purchasePrice">Valor de compra</th>
+              <th scope="col" data-i18n="salePrice">Valor de venta</th>
+              <th scope="col" data-i18n="status">Estado</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
             </tr>
           </thead>
           <tbody id="productosTableBody">
-            <tr><td colspan="7">Cargando productos...</td></tr>
+            <tr><td class="state-row" colspan="7" data-i18n="loading">Cargando productos…</td></tr>
           </tbody>
         </table>
       </div>
@@ -59,36 +76,36 @@
 
   <dialog id="productoDialog">
     <form id="productoForm" class="dialog-form">
-      <h2 id="productoDialogTitle">Nuevo producto</h2>
+      <h2 id="productoDialogTitle" data-i18n="addProduct">Nuevo producto</h2>
       <label>
-        Categoría
+        <span data-i18n="category">Categoría</span>
         <select name="idCategoria" required>
           <option value="">Cargando categorías...</option>
         </select>
       </label>
       <label>
-        Nombre del producto
+        <span data-i18n="productName">Nombre del producto</span>
         <input type="text" name="producto" maxlength="150" required>
       </label>
       <label>
-        Valor unitario de compra (COP)
+        <span data-i18n="purchasePrice">Valor unitario de compra (COP)</span>
         <input type="number" name="valorUnitarioCompra" min="0" max="9999999999.99" step="0.01" required>
       </label>
       <label>
-        Valor unitario de venta (COP)
+        <span data-i18n="salePrice">Valor unitario de venta (COP)</span>
         <input type="number" name="valorUnitarioVenta" min="0" max="9999999999.99" step="0.01" required>
       </label>
       <label>
-        Estado
+        <span data-i18n="status">Estado</span>
         <select name="activo" required>
-          <option value="true">Activo</option>
-          <option value="false">Inactivo</option>
+          <option value="true" data-i18n="active">Activo</option>
+          <option value="false" data-i18n="inactive">Inactivo</option>
         </select>
       </label>
       <p id="productoFormMessage" class="message" role="status" hidden></p>
       <div class="dialog-actions">
-        <button id="cancelProductoBtn" type="button" class="btn btn-muted">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar producto</button>
+        <button id="cancelProductoBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" data-i18n="saveProduct">Guardar producto</button>
       </div>
     </form>
   </dialog>

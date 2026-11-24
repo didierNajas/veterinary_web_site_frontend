@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Compañías | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">ADMINISTRACIÓN</p>
+        <h1 data-i18n="heading">Compañías</h1>
+        <p data-i18n="intro">Administra los datos de las compañías asociadas.</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences" aria-label="Preferencias">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" aria-current="page" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
+
+    <section class="card" aria-labelledby="companiesTitle">
+      <div class="card-heading">
+        <div>
+          <h2 id="companiesTitle" data-i18n="listHeading">Directorio de compañías</h2>
+          <p class="hint" data-i18n="listHint">Datos de identificación y contacto.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadCompaniesBtn" type="button" class="btn btn-secondary" data-i18n="refresh">Actualizar</button>
+          <button id="addCompanyBtn" type="button" class="btn btn-primary" data-i18n="addCompany">Nueva compañía</button>
+        </div>
+      </div>
+      <p id="companiesMessage" class="message" role="status" aria-live="polite" hidden></p>
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de compañías, desplazable">
+        <table>
+          <caption class="sr-only" data-i18n="tableCaption">Compañías registradas</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="nit">NIT</th>
+              <th scope="col" data-i18n="name">Nombre</th>
+              <th scope="col" data-i18n="phone">Teléfono</th>
+              <th scope="col" data-i18n="email">Correo</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="companiesTableBody" aria-live="polite" aria-busy="true">
+            <tr><td class="state-row" colspan="6" data-i18n="loadingCompanies">Cargando compañías…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="companyDialog" aria-labelledby="companyDialogTitle">
+    <form id="companyForm" class="dialog-form" novalidate>
+      <h2 id="companyDialogTitle" data-i18n="newCompany">Nueva compañía</h2>
+      <div class="form-grid">
+        <label>
+          <span data-i18n="nit">NIT</span>
+          <input name="nit" maxlength="20" autocomplete="off" required aria-required="true">
+        </label>
+        <label>
+          <span data-i18n="name">Nombre</span>
+          <input name="nombre" maxlength="100" autocomplete="organization" required aria-required="true">
+        </label>
+        <label class="field-full">
+          <span data-i18n="address">Dirección</span>
+          <input name="direccion" maxlength="255" autocomplete="street-address">
+        </label>
+        <label>
+          <span data-i18n="phone">Teléfono</span>
+          <input name="telefono" maxlength="20" type="tel" autocomplete="tel">
+        </label>
+        <label>
+          <span data-i18n="email">Correo</span>
+          <input name="correo" maxlength="150" type="email" autocomplete="email">
+        </label>
+      </div>
+      <p id="companyFormMessage" class="message" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelCompanyBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button id="saveCompanyBtn" type="submit" class="btn btn-primary" data-i18n="save">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="companias.js"></script>
+</body>
+</html>

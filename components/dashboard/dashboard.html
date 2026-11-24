@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f7fb">
+  <meta name="theme-color" content="#f5f9ff">
   <title>Panel de gestión | VetCare</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dashboard.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegación principal">
-      <a class="brand" href="/index.html" aria-label="VetCare, panel principal">
-        <span class="brand-mark" aria-hidden="true">V</span>
-        <span class="brand-copy"><strong>VetCare</strong><small>GESTIÓN VETERINARIA</small></span>
-      </a>
-
       <div class="nav-caption">MENÚ PRINCIPAL</div>
       <nav class="side-nav">
-        <a class="nav-link is-active" href="#overview"><span class="nav-icon" aria-hidden="true">01</span>Resumen</a>
-        <a class="nav-link" href="#profileSection"><span class="nav-icon" aria-hidden="true">02</span>Mi perfil</a>
-        <a class="nav-link" href="#quickAccess"><span class="nav-icon" aria-hidden="true">03</span>Accesos rápidos</a>
-        <a class="nav-link" href="#citasSection"><span class="nav-icon" aria-hidden="true">04</span>Citas</a>
-        <a id="historiasNavLink" class="nav-link" href="/components/historia-clinica/historia-clinica.html" hidden><span class="nav-icon" aria-hidden="true">05</span>Historias clínicas</a>
-        <a id="servicesNavLink" class="nav-link" href="/components/servicio/servicio.html" hidden><span class="nav-icon" aria-hidden="true">06</span>Servicios</a>
-        <a id="productsNavLink" class="nav-link" href="/components/producto/producto.html" hidden><span class="nav-icon" aria-hidden="true">07</span>Productos</a>
-        <a id="ownersNavLink" class="nav-link" href="#propietariosSection" hidden><span class="nav-icon" aria-hidden="true">08</span>Propietarios</a>
-        <a id="adminNavLink" class="nav-link" href="#adminSection" hidden><span class="nav-icon" aria-hidden="true">09</span>Usuarios</a>
+        <a class="nav-link" href="#profileSection"><span class="nav-icon" aria-hidden="true">01</span>Mi perfil</a>
+        <a class="nav-link" href="#quickAccess"><span class="nav-icon" aria-hidden="true">02</span>Accesos rápidos</a>
+        <a class="nav-link" href="#citasSection"><span class="nav-icon" aria-hidden="true">03</span>Citas</a>
+        <a id="historiasNavLink" class="nav-link" href="/components/historia-clinica/historia-clinica.html" hidden><span class="nav-icon" aria-hidden="true">04</span>Historias clínicas</a>
+        <a id="servicesNavLink" class="nav-link" href="/components/servicio/servicio.html" hidden><span class="nav-icon" aria-hidden="true">05</span>Servicios</a>
+        <a id="productsNavLink" class="nav-link" href="/components/producto/producto.html" hidden><span class="nav-icon" aria-hidden="true">06</span>Productos</a>
+        <a id="inventoryNavLink" class="nav-link" href="/components/inventario/inventario.html" hidden><span class="nav-icon" aria-hidden="true">07</span>Términos inventario</a>
+        <a id="schedulesNavLink" class="nav-link" href="/components/horario-veterinario/horario-veterinario.html" hidden><span class="nav-icon" aria-hidden="true">08</span>Horarios</a>
+        <a id="ownersNavLink" class="nav-link" href="#propietariosSection" hidden><span class="nav-icon" aria-hidden="true">9</span>Propietarios</a>
+        <a id="adminNavLink" class="nav-link" href="#adminSection" hidden><span class="nav-icon" aria-hidden="true">10</span>Usuarios</a>
+        <a id="companiesNavLink" class="nav-link" href="/components/companias/companias.html" hidden><span class="nav-icon" aria-hidden="true">11</span>Compañías</a>
+        <a id="invoicesNavLink" class="nav-link" href="/components/facturas/facturas.html" hidden><span class="nav-icon" aria-hidden="true">12</span>Facturas</a>
+        <a id="paymentsNavLink" class="nav-link" href="/components/pagos/pagos.html" hidden><span class="nav-icon" aria-hidden="true">13</span>Pagos</a>
+        <a id="movementsNavLink" class="nav-link" href="/components/movimientos-inventario/movimientos-inventario.html" hidden><span class="nav-icon" aria-hidden="true">14</span>Movimientos</a>
       </nav>
 
       <div class="sidebar-footer">
@@ -45,6 +45,10 @@
           <h1 id="overview">Panel de control</h1>
           <p id="welcomeText" class="welcome-text">Cargando sesión...</p>
         </div>
+        <a class="brand" href="/index.html" aria-label="VetCare, panel principal">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-copy"><strong>VetCare</strong><small>GESTIÓN VETERINARIA</small></span>
+        </a>
         <div class="topbar-actions">
           <span class="topbar-status"><span class="status-dot" aria-hidden="true"></span>Sesión activa</span>
           <button id="logoutBtn" type="button" class="btn btn-outline-danger">Cerrar sesión</button>
@@ -149,6 +153,36 @@
           <a id="productsShortcut" href="/components/producto/producto.html" class="shortcut-card" hidden>
             <span class="shortcut-mark" aria-hidden="true">05</span>
             <span><strong>Gestión de productos</strong><small>Administrar inventario y precios</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="inventoryShortcut" href="/components/inventario/inventario.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">07</span>
+            <span><strong>Términos de inventario</strong><small>Administrar los términos del inventario</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="schedulesShortcut" href="/components/horario-veterinario/horario-veterinario.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">08</span>
+            <span><strong>Horarios veterinarios</strong><small>Gestionar fechas y disponibilidad</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="companiesShortcut" href="/components/companias/companias.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">09</span>
+            <span><strong>Compañías</strong><small>Administrar datos de compañías asociadas</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="invoicesShortcut" href="/components/facturas/facturas.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">10</span>
+            <span><strong>Facturación</strong><small>Crear y administrar facturas de productos</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="paymentsShortcut" href="/components/pagos/pagos.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">11</span>
+            <span><strong>Pagos</strong><small>Registrar abonos y consultar pagos</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="movementsShortcut" href="/components/movimientos-inventario/movimientos-inventario.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">12</span>
+            <span><strong>Movimientos de inventario</strong><small>Registrar entradas y salidas de productos</small></span>
             <span class="shortcut-arrow" aria-hidden="true">→</span>
           </a>
           <a id="ownersShortcut" href="/components/propietario/propietario.html" class="shortcut-card" hidden>

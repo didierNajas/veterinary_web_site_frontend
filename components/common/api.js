@@ -36,6 +36,33 @@ export async function responseError(response) {
   }
 }
 
+export async function apiJson(path, options = {}) {
+  const response = await apiRequest(path, {
+    ...options,
+    headers: { ...authHeaders(), ...options.headers },
+  });
+  if (!response) return null;
+  if (!response.ok) throw new Error(await responseError(response));
+  if (response.status === 204) return true;
+  return response.json();
+}
+
+export function createCrudService(resourcePath) {
+  return {
+    list: () => apiJson(resourcePath, { headers: authHeaders() }),
+    get: (id) => apiJson(`${resourcePath}/${encodeURIComponent(id)}`, { headers: authHeaders() }),
+    save: (id, payload) => apiJson(id ? `${resourcePath}/${encodeURIComponent(id)}` : resourcePath, {
+      method: id ? "PUT" : "POST",
+      headers: authHeaders(true),
+      body: JSON.stringify(payload),
+    }),
+    remove: (id) => apiJson(`${resourcePath}/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: authHeaders(),
+    }),
+  };
+}
+
 export function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -48,6 +75,8 @@ export function escapeHtml(value) {
 export function showMessage(element, type, text) {
   element.hidden = false;
   element.className = `message ${type}`;
+  element.setAttribute("role", type === "error" ? "alert" : "status");
+  element.setAttribute("aria-live", type === "error" ? "assertive" : "polite");
   element.textContent = text;
 }
 
@@ -55,10 +84,12 @@ export function hideMessage(element) {
   element.hidden = true;
   element.textContent = "";
   element.className = "message";
+  element.setAttribute("role", "status");
+  element.setAttribute("aria-live", "polite");
 }
 
-export function formatCurrency(value) {
-  return new Intl.NumberFormat("es-CO", {
+export function formatCurrency(value, locale = "es-CO") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "COP",
     maximumFractionDigits: 2,

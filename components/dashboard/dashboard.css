@@ -1,21 +1,21 @@
 :root {
   color-scheme: light;
-  --page: #4facfe;
+  --page: #f5f9ff;
   --surface: #ffffff;
-  --surface-soft: #f8fafc;
-  --ink: #172b4d;
-  --muted: #718096;
-  --line: #e6ebf2;
-  --primary: #4facfe;
-  --primary-dark: #043662;
-  --primary-soft: #e8f4f2;
+  --surface-soft: #f3f8fd;
+  --ink: #263746;
+  --muted: #64778a;
+  --line: #dce8f2;
+  --primary: #0e78b4;
+  --primary-dark: #09659a;
+  --primary-soft: #e8f5ff;
   --success: #16835d;
   --success-soft: #e8f6ef;
   --danger: #c2414b;
   --danger-soft: #fff0f0;
   --warning: #a56812;
   --warning-soft: #fff6e5;
-  --shadow: 0 8px 26px rgba(31, 51, 79, 0.045);
+  --shadow: 0 8px 26px rgba(35, 83, 124, 0.09);
 }
 
 * {
@@ -33,7 +33,7 @@ body {
   margin: 0;
   background: var(--page);
   color: var(--ink);
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   line-height: 1.55;
 }
@@ -87,9 +87,9 @@ a {
   height: 42px;
   place-items: center;
   border-radius: 13px;
-  background: var(--primary);
+  background: linear-gradient(135deg, #176cac 0%, #b6dfe5 100%);
   color: #fff;
-  font-family: "Manrope", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 23px;
   font-weight: 800;
 }
@@ -101,14 +101,14 @@ a {
 }
 
 .brand-copy strong {
-  font-family: "Manrope", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 17px;
   letter-spacing: -0.5px;
 }
 
 .brand-copy small {
   margin-top: 3px;
-  color: var(--muted);
+  color: white;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -116,7 +116,7 @@ a {
 
 .nav-caption,
 .eyebrow {
-  color: #000000;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1.25px;
@@ -138,7 +138,7 @@ a {
   gap: 12px;
   padding: 8px 12px;
   border-radius: 9px;
-  color: #5e6d82;
+  color: var(--muted);
   font-weight: 600;
   text-decoration: none;
   transition: background 160ms ease, color 160ms ease;
@@ -196,6 +196,9 @@ a {
   gap: 22px;
   margin-left: 252px;
   padding: 34px clamp(22px, 4vw, 58px) 48px;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(79, 172, 254, 0.1), transparent 34rem),
+    var(--page);
 }
 
 .topbar,
@@ -212,7 +215,41 @@ a {
 
 .topbar {
   min-height: 92px;
-  padding-bottom: 5px;
+  padding: 18px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 15px;
+  background: linear-gradient(135deg, #176cac 0%, #087b8c 100%);
+  box-shadow: var(--shadow);
+  color: #fff;
+}
+
+.topbar h1,
+.topbar .eyebrow,
+.topbar .welcome-text,
+.topbar .topbar-status {
+  color: #fff;
+}
+
+.topbar .welcome-text {
+  opacity: 0.9;
+}
+
+.topbar .btn-outline-danger {
+  border-color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.topbar .btn-outline-danger:hover:not(:disabled) {
+  background: #fff;
+  color: var(--danger);
+}
+
+.page-heading h1,
+.section-heading h2,
+.section-heading h3,
+.metric-value {
+  font-family: "Poppins", sans-serif;
 }
 
 .page-heading .eyebrow,
@@ -231,7 +268,7 @@ h1,
 h2,
 h3 {
   color: var(--ink);
-  font-family: "Manrope", sans-serif;
+  font-family: "Poppins", sans-serif;
   letter-spacing: -0.55px;
 }
 
@@ -255,7 +292,7 @@ h3 {
 .welcome-text,
 .section-description {
   margin-bottom: 0;
-  color: rgb(33, 32, 32);
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -267,7 +304,7 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #1b1c1c;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
@@ -281,7 +318,7 @@ h3 {
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-  gap: 2px;
+  gap: 12px;
 }
 
 .metric-card,
@@ -312,14 +349,14 @@ h3 {
 
 .metric-value {
   color: var(--ink);
-  font-family: "Manrope", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 25px;
   font-weight: 800;
   line-height: 1.2;
 }
 
 .metric-value .badge {
-  font-family: "DM Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 11px;
   vertical-align: 3px;
 }
@@ -406,10 +443,10 @@ select {
   width: 100%;
   min-height: 42px;
   padding: 9px 11px;
-  border: 1px solid #dce3ec;
+  border: 1px solid var(--line);
   border-radius: 8px;
   outline: none;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
@@ -420,8 +457,8 @@ input::placeholder {
 
 input:focus,
 select:focus {
-  border-color: #4b9993;
-  box-shadow: 0 0 0 3px rgba(23, 107, 103, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
 }
 
 .form-actions {
@@ -448,7 +485,7 @@ select:focus {
 .btn:focus-visible,
 .nav-link:focus-visible,
 .shortcut-card:focus-visible {
-  outline: 3px solid rgba(23, 107, 103, 0.26);
+  outline: 3px solid rgba(79, 172, 254, 0.35);
   outline-offset: 2px;
 }
 
@@ -467,13 +504,13 @@ select:focus {
 }
 
 .btn-secondary {
-  border-color: #dce6e6;
+  border-color: var(--line);
   background: var(--surface);
   color: var(--primary);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  border-color: #a8cfca;
+  border-color: #a9d8fa;
   background: var(--primary-soft);
 }
 
@@ -503,7 +540,7 @@ select:focus {
 .btn-muted {
   border-color: var(--line);
   background: var(--surface-soft);
-  color: #526178;
+  color: var(--muted);
 }
 
 .shortcut-grid {
@@ -526,7 +563,7 @@ select:focus {
 }
 
 .shortcut-card:hover {
-  border-color: #b7d5d2;
+  border-color: #b7ddfa;
   background: var(--primary-soft);
 }
 
@@ -537,7 +574,7 @@ select:focus {
   flex: 0 0 auto;
   place-items: center;
   border-radius: 9px;
-  background: #e4efee;
+  background: #e8f5ff;
   color: var(--primary);
   font-size: 10px;
   font-weight: 700;
@@ -588,7 +625,7 @@ td {
 
 th {
   background: var(--surface-soft);
-  color: #596a81;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -596,7 +633,7 @@ th {
 }
 
 td {
-  color: #43536a;
+  color: var(--ink);
 }
 
 tbody tr:last-child td {
@@ -604,7 +641,7 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover {
-  background: #fbfcfe;
+  background: #f7fbff;
 }
 
 .badge {
@@ -628,8 +665,8 @@ tbody tr:hover {
 }
 
 .badge-neutral {
-  background: #eef1f5;
-  color: #64748b;
+  background: #eef5fb;
+  color: #64778a;
 }
 
 .row-actions {
@@ -779,6 +816,7 @@ dialog::backdrop {
 
   .topbar {
     min-height: auto;
+    padding: 17px;
   }
 }
 

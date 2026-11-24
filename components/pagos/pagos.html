@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Pagos | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">FINANZAS</p>
+        <h1 data-i18n="heading">Pagos</h1>
+        <p data-i18n="intro">Registra abonos y consulta pagos asociados a facturas.</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences" aria-label="Preferencias">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" aria-current="page" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
+
+    <section class="card" aria-labelledby="paymentsTitle">
+      <div class="card-heading">
+        <div>
+          <h2 id="paymentsTitle" data-i18n="listHeading">Registro de pagos</h2>
+          <p class="hint" data-i18n="listHint">El saldo disponible se calcula a partir de los pagos registrados.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadPaymentsBtn" type="button" class="btn btn-secondary" data-i18n="refresh">Actualizar</button>
+          <button id="addPaymentBtn" type="button" class="btn btn-primary" data-i18n="addPayment">Nuevo pago</button>
+        </div>
+      </div>
+      <p id="paymentsMessage" class="message" role="status" aria-live="polite" hidden></p>
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de pagos, desplazable">
+        <table>
+          <caption class="sr-only" data-i18n="tableCaption">Pagos registrados</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="invoice">Factura</th>
+              <th scope="col" data-i18n="method">Método</th>
+              <th scope="col" data-i18n="amount">Monto</th>
+              <th scope="col" data-i18n="date">Fecha de pago</th>
+              <th scope="col" data-i18n="reference">Referencia</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody" aria-live="polite" aria-busy="true">
+            <tr><td class="state-row" colspan="7" data-i18n="loadingPayments">Cargando pagos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="paymentDialog" aria-labelledby="paymentDialogTitle">
+    <form id="paymentForm" class="dialog-form" novalidate>
+      <h2 id="paymentDialogTitle" data-i18n="newPayment">Nuevo pago</h2>
+      <label>
+        <span data-i18n="invoice">Factura</span>
+        <select name="idFactura" required aria-required="true">
+          <option value="" data-i18n="chooseInvoice">Selecciona una factura</option>
+        </select>
+      </label>
+      <p id="paymentBalance" class="field-note" aria-live="polite"></p>
+      <label>
+        <span data-i18n="method">Método de pago</span>
+        <select name="metodoPago" required aria-required="true">
+          <option value="efectivo" data-i18n="cash">Efectivo</option>
+          <option value="tarjeta" data-i18n="card">Tarjeta</option>
+          <option value="transferencia" data-i18n="transfer">Transferencia</option>
+          <option value="otro" data-i18n="other">Otro</option>
+        </select>
+      </label>
+      <label>
+        <span data-i18n="amount">Monto</span>
+        <input name="monto" type="number" min="0.01" max="9999999999.99" step="0.01" required aria-required="true">
+      </label>
+      <label>
+        <span data-i18n="reference">Referencia (opcional)</span>
+        <input name="referencia" maxlength="100" autocomplete="off">
+      </label>
+      <p id="paymentFormMessage" class="message" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelPaymentBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button id="savePaymentBtn" type="submit" class="btn btn-primary" data-i18n="save">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="pagos.js"></script>
+</body>
+</html>

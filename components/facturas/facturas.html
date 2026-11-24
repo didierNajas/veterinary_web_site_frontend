@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f9ff">
+  <title data-i18n="pageTitle">Facturas | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="stylesheet" href="../common/operations.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" data-i18n="eyebrow">VENTAS</p>
+        <h1 data-i18n="heading">Facturas</h1>
+        <p data-i18n="intro">Crea facturas con productos y detalle de impuestos.</p>
+      </div>
+      <div class="topbar-actions">
+        <div class="preference-controls" role="group" data-i18n-aria-label="preferences" aria-label="Preferencias">
+          <button type="button" class="btn btn-muted" data-language-toggle>English</button>
+          <button type="button" class="btn btn-muted" data-theme-toggle>Modo oscuro</button>
+        </div>
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary" data-i18n="backToDashboard">Volver al panel</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger" data-i18n="logout">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <nav class="module-nav" data-i18n-aria-label="managementNav" aria-label="Gestión">
+      <a href="../companias/companias.html" data-i18n="navCompanies">Compañías</a>
+      <a href="../facturas/facturas.html" aria-current="page" data-i18n="navInvoices">Facturas</a>
+      <a href="../pagos/pagos.html" data-i18n="navPayments">Pagos</a>
+      <a href="../movimientos-inventario/movimientos-inventario.html" data-i18n="navMovements">Movimientos</a>
+      <a href="../producto/producto.html" data-i18n="navProducts">Productos</a>
+      <a href="../inventario/inventario.html" data-i18n="navTerms">Términos</a>
+      <a href="../horario-veterinario/horario-veterinario.html" data-i18n="navSchedules">Horarios</a>
+    </nav>
+
+    <section class="card" aria-labelledby="invoicesTitle">
+      <div class="card-heading">
+        <div>
+          <h2 id="invoicesTitle" data-i18n="listHeading">Registro de facturas</h2>
+          <p class="hint" data-i18n="listHint">El servidor calcula subtotales y total con los precios vigentes.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadInvoicesBtn" type="button" class="btn btn-secondary" data-i18n="refresh">Actualizar</button>
+          <button id="addInvoiceBtn" type="button" class="btn btn-primary" data-i18n="addInvoice">Nueva factura</button>
+        </div>
+      </div>
+      <p id="invoicesMessage" class="message" role="status" aria-live="polite" hidden></p>
+      <div class="table-wrap" role="region" tabindex="0" data-i18n-aria-label="tableScroll" aria-label="Tabla de facturas, desplazable">
+        <table>
+          <caption class="sr-only" data-i18n="tableCaption">Facturas registradas</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="id">ID</th>
+              <th scope="col" data-i18n="date">Fecha</th>
+              <th scope="col" data-i18n="user">Usuario</th>
+              <th scope="col" data-i18n="company">Compañía</th>
+              <th scope="col" data-i18n="items">Productos</th>
+              <th scope="col" data-i18n="total">Total</th>
+              <th scope="col" data-i18n="actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="invoicesTableBody" aria-live="polite" aria-busy="true">
+            <tr><td class="state-row" colspan="7" data-i18n="loadingInvoices">Cargando facturas…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="invoiceDialog" class="dialog-wide" aria-labelledby="invoiceDialogTitle">
+    <form id="invoiceForm" class="dialog-form" novalidate>
+      <h2 id="invoiceDialogTitle" data-i18n="newInvoice">Nueva factura</h2>
+      <div class="form-grid">
+        <label>
+          <span data-i18n="userId">ID del usuario</span>
+          <input name="idUsuario" type="number" min="1" step="1" required aria-required="true">
+        </label>
+        <label>
+          <span data-i18n="companyOptional">Compañía (opcional)</span>
+          <select name="idCompania">
+            <option value="" data-i18n="noCompany">Sin compañía</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="term">Término de factura</span>
+          <select name="idTermino" required aria-required="true">
+            <option value="" data-i18n="chooseTerm">Selecciona un término</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="date">Fecha</span>
+          <input name="fecha" type="date" required aria-required="true">
+        </label>
+        <label>
+          <span data-i18n="time">Hora</span>
+          <input name="hora" type="time" required aria-required="true">
+        </label>
+        <label>
+          <span data-i18n="taxPercent">Impuesto (%)</span>
+          <input name="tasaImpuesto" type="number" min="0" max="100" step="0.01" value="19" required aria-required="true">
+        </label>
+      </div>
+
+      <div class="card-heading">
+        <div>
+          <h3 data-i18n="invoiceLines">Detalle de productos</h3>
+          <p class="hint" data-i18n="priceHint">El valor unitario se confirma en el servidor al guardar.</p>
+        </div>
+        <button id="addInvoiceLineBtn" type="button" class="btn btn-secondary" data-i18n="addLine">Añadir producto</button>
+      </div>
+      <div id="invoiceLines" class="line-items" aria-live="polite"></div>
+      <p id="invoiceLinesError" class="field-error" role="alert" hidden></p>
+      <div class="invoice-totals" aria-live="polite">
+        <div><span data-i18n="subtotal">Subtotal estimado</span><strong id="invoiceSubtotal">$0</strong></div>
+        <div><span data-i18n="tax">Impuesto estimado</span><strong id="invoiceTax">$0</strong></div>
+        <div class="total"><span data-i18n="total">Total estimado</span><strong id="invoiceTotal">$0</strong></div>
+      </div>
+      <p id="invoiceFormMessage" class="message" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelInvoiceBtn" type="button" class="btn btn-muted" data-i18n="cancel">Cancelar</button>
+        <button id="saveInvoiceBtn" type="submit" class="btn btn-primary" data-i18n="save">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="facturas.js"></script>
+</body>
+</html>
