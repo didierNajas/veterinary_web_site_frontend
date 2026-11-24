@@ -137,12 +137,12 @@ h3 {
 }
 
 .btn-secondary {
-  background: var(--muted);
+  background: #4facfe;
   color: white;
 }
 
 .btn-secondary:hover {
-  background: #6b7280;
+  background: #3a9bf0;
   transform: translateY(-2px);
 }
 

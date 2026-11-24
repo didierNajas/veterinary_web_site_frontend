@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Gestión de productos | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Gestión de productos</h1>
+        <p id="welcomeText">Administra el catálogo y los valores unitarios.</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary">Volver al dashboard</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-heading">
+        <div>
+          <h2>Productos</h2>
+          <p class="hint">Los productos desactivados se conservan en el historial.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadProductosBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+          <button id="addProductoBtn" type="button" class="btn btn-primary">Nuevo producto</button>
+        </div>
+      </div>
+      <p id="productoMessage" class="message" role="status" hidden></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Valor de compra</th>
+              <th scope="col">Valor de venta</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="productosTableBody">
+            <tr><td colspan="7">Cargando productos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="productoDialog">
+    <form id="productoForm" class="dialog-form">
+      <h2 id="productoDialogTitle">Nuevo producto</h2>
+      <label>
+        Categoría
+        <select name="idCategoria" required>
+          <option value="">Cargando categorías...</option>
+        </select>
+      </label>
+      <label>
+        Nombre del producto
+        <input type="text" name="producto" maxlength="150" required>
+      </label>
+      <label>
+        Valor unitario de compra (COP)
+        <input type="number" name="valorUnitarioCompra" min="0" max="9999999999.99" step="0.01" required>
+      </label>
+      <label>
+        Valor unitario de venta (COP)
+        <input type="number" name="valorUnitarioVenta" min="0" max="9999999999.99" step="0.01" required>
+      </label>
+      <label>
+        Estado
+        <select name="activo" required>
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
+      </label>
+      <p id="productoFormMessage" class="message" role="status" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelProductoBtn" type="button" class="btn btn-muted">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar producto</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="producto.js"></script>
+</body>
+</html>

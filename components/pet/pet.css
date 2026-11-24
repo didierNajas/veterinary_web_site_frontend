@@ -137,8 +137,9 @@ h3 {
 }
 
 .btn-secondary {
-  background: var(--muted);
+  background: var(--primary);
   color: white;
+  
 }
 
 .btn-secondary:hover {

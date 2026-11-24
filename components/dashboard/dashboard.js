@@ -5,18 +5,47 @@ const welcomeText = document.getElementById("welcomeText");
 const adminSection = document.getElementById("adminSection");
 const usersTableBody = document.getElementById("usersTableBody");
 const adminMessage = document.getElementById("adminMessage");
+const adminNavLink = document.getElementById("adminNavLink");
+const ownersNavLink = document.getElementById("ownersNavLink");
+const ownersShortcut = document.getElementById("ownersShortcut");
+const historiasNavLink = document.getElementById("historiasNavLink");
+const historiasShortcut = document.getElementById("historiasShortcut");
+const accountStatusMetric = document.getElementById("accountStatusMetric");
+const roleMetric = document.getElementById("roleMetric");
+const userIdMetric = document.getElementById("userIdMetric");
+const ownersMetricCard = document.getElementById("ownersMetricCard");
+const ownersMetric = document.getElementById("ownersMetric");
+const petsMetricCard = document.getElementById("petsMetricCard");
+const petsMetric = document.getElementById("petsMetric");
+const usersMetricCard = document.getElementById("usersMetricCard");
+const usersMetric = document.getElementById("usersMetric");
 const passwordMessage = document.getElementById("passwordMessage");
 const editUserDialog = document.getElementById("editUserDialog");
 const editMessage = document.getElementById("editMessage");
+const citasTableBody = document.getElementById("citasTableBody");
+const citaMessage = document.getElementById("citaMessage");
+const citaDialog = document.getElementById("citaDialog");
+const citaForm = document.getElementById("citaForm");
+const citaFormMessage = document.getElementById("citaFormMessage");
+const servicesNavLink = document.getElementById("servicesNavLink");
+const productsNavLink = document.getElementById("productsNavLink");
+const servicesShortcut = document.getElementById("servicesShortcut");
+const productsShortcut = document.getElementById("productsShortcut");
 
 let currentUser = null;
 let usersCache = [];
+let citasCache = [];
+let mascotasCache = [];
+let serviciosCache = [];
+let editingCitaId = null;
 const propietariosSection = document.getElementById("propietariosSection");
 const propietarioMessage = document.getElementById("propietarioMessage");
 const propietariosTableBody = document.getElementById("propietariosTableBody");
 
 async function loadPropietariosConMascotas() {
   hideMessage(propietarioMessage);
+  ownersMetric.textContent = "—";
+  petsMetric.textContent = "—";
   propietariosTableBody.innerHTML = `<tr><td colspan="7">Cargando propietarios y mascotas...</td></tr>`;
 
   try {
@@ -43,7 +72,7 @@ async function loadPropietariosConMascotas() {
     const mascotas = await mascotasResponse.json();
     
     // Group mascotas by propietario ID
-    const mascotasPorPropietario = {};
+    const mascotasPorPropietario = Object.create(null);
     mascotas.forEach(mascota => {
       const propietarioId = mascota.idPropietario;
       if (!mascotasPorPropietario[propietarioId]) {
@@ -51,8 +80,9 @@ async function loadPropietariosConMascotas() {
       }
       mascotasPorPropietario[propietarioId].push(mascota);
     });
-    
-    // Combine data and render
+
+    ownersMetric.textContent = String(propietarios.length);
+    petsMetric.textContent = String(mascotas.length);
     renderPropietariosTable(propietarios, mascotasPorPropietario);
   } catch (error) {
     propietariosTableBody.innerHTML = `<tr><td colspan="7">Error cargando datos: ${error.message}</td></tr>`;
@@ -72,29 +102,221 @@ function renderPropietariosTable(propietarios, mascotasPorPropietario) {
       (p) => {
         const mascotas = mascotasPorPropietario[p.idPropietario] || [];
         const mascotasList = mascotas
-          .map(m => `${m.nombre} (${m.especie || ""})`)
+          .map(m => `${escapeHtml(m.nombre)}${m.especie ? ` (${escapeHtml(m.especie)})` : ""}`)
           .join(", ");
         const mascotasCount = mascotas.length;
-        const mascotasDisplay = mascotasCount > 0 
-          ? `${mascotasCount} mascota${mascotasCount !== 1 ? 's' : ''}: ${mascotasList}` 
-          : "Sin mascotas";
+        const mascotasDisplay = mascotasCount > 0
+          ? `<span class="badge badge-neutral">${mascotasCount} mascota${mascotasCount !== 1 ? "s" : ""}</span><br>${mascotasList}`
+          : `<span class="badge badge-inactive">Sin mascotas</span>`;
         
         return `
           <tr>
-            <td>${p.idPropietario}</td>
-            <td>${p.nombre}</td>
-            <td>${p.apellido}</td>
-            <td>${p.telefono || "-"}</td>
-            <td>${p.direccion || "-"}</td>
+            <td>${escapeHtml(p.idPropietario)}</td>
+            <td>${escapeHtml(p.nombre)}</td>
+            <td>${escapeHtml(p.apellido)}</td>
+            <td>${escapeHtml(p.telefono || "-")}</td>
+            <td>${escapeHtml(p.direccion || "-")}</td>
             <td>${mascotasDisplay}</td>
-            <td>
-              <!-- Actions could be added here if needed -->
-            </td>
+            <td>—</td>
           </tr>
         `;
       }
     )
     .join("");
+}
+
+async function loadCitas() {
+  hideMessage(citaMessage);
+  citasTableBody.innerHTML = `<tr><td colspan="9">Cargando citas...</td></tr>`;
+
+  try {
+    const [citasResponse, mascotasResponse, serviciosResponse] = await Promise.all([
+      apiFetch("/citas", { headers: authHeaders() }),
+      apiFetch("/mascotas", { headers: authHeaders() }),
+      apiFetch("/servicios", { headers: authHeaders() }),
+    ]);
+    if (!citasResponse || !mascotasResponse || !serviciosResponse) return;
+
+    if (!citasResponse.ok) {
+      throw new Error(await readErrorMessage(citasResponse));
+    }
+    if (!mascotasResponse.ok) {
+      throw new Error(await readErrorMessage(mascotasResponse));
+    }
+    if (!serviciosResponse.ok) {
+      throw new Error(await readErrorMessage(serviciosResponse));
+    }
+
+    citasCache = await citasResponse.json();
+    mascotasCache = await mascotasResponse.json();
+    serviciosCache = await serviciosResponse.json();
+    renderMascotaOptions();
+    renderServicioOptions();
+    renderCitasTable();
+  } catch (error) {
+    citasTableBody.innerHTML = `<tr><td colspan="9">No se pudieron cargar las citas.</td></tr>`;
+    showMessage(citaMessage, "error", error.message || "No se pudieron cargar las citas.");
+    console.error("Error cargando citas:", error);
+  }
+}
+
+function renderMascotaOptions() {
+  const mascotaSelect = citaForm.elements.namedItem("idMascota");
+  mascotaSelect.innerHTML = `
+    <option value="">Selecciona una mascota</option>
+    ${mascotasCache.map((mascota) => `
+      <option value="${escapeHtml(mascota.idMascota)}">${escapeHtml(mascota.nombre)} (#${escapeHtml(mascota.idMascota)})</option>
+    `).join("")}
+  `;
+}
+
+function renderServicioOptions(selectedId = null) {
+  const servicioSelect = citaForm.elements.namedItem("idServicio");
+  const serviciosDisponibles = serviciosCache.filter((servicio) =>
+    servicio.activo || Number(servicio.idServicio) === Number(selectedId)
+  );
+  servicioSelect.innerHTML = `
+    <option value="">Selecciona un servicio</option>
+    ${serviciosDisponibles.map((servicio) => `
+      <option value="${escapeHtml(servicio.idServicio)}">
+        ${escapeHtml(servicio.nombreServicio)}${servicio.activo ? "" : " (inactivo)"}
+      </option>
+    `).join("")}
+  `;
+}
+
+function renderCitasTable() {
+  if (!citasCache.length) {
+    citasTableBody.innerHTML = `<tr><td colspan="9">Todavía no hay citas registradas.</td></tr>`;
+    return;
+  }
+
+  const mascotasPorId = new Map(mascotasCache.map((mascota) => [
+    Number(mascota.idMascota),
+    mascota.nombre,
+  ]));
+  const serviciosPorId = new Map(serviciosCache.map((servicio) => [
+    Number(servicio.idServicio),
+    servicio.nombreServicio,
+  ]));
+
+  citasTableBody.innerHTML = citasCache.map((cita) => {
+    const estado = String(cita.estado || "PENDIENTE");
+    const estadoNormalizado = estado.toUpperCase();
+    const estadoClass = estadoNormalizado === "CANCELADA"
+      ? "badge-inactive"
+      : ["CONFIRMADA", "COMPLETADA"].includes(estadoNormalizado)
+        ? "badge-active"
+        : "badge-neutral";
+
+    return `
+      <tr>
+        <td>${escapeHtml(cita.idCita)}</td>
+        <td>${escapeHtml(mascotasPorId.get(Number(cita.idMascota)) || `Mascota #${cita.idMascota}`)}</td>
+        <td>${escapeHtml(formatAppointmentDate(cita.fecha))}</td>
+        <td>${escapeHtml(String(cita.hora || "").slice(0, 5))}</td>
+        <td>${escapeHtml(serviciosPorId.get(Number(cita.idServicio)) || `Servicio #${cita.idServicio}`)}</td>
+        <td>#${escapeHtml(cita.idVeterinario)}</td>
+        <td><span class="badge ${estadoClass}">${escapeHtml(estado)}</span></td>
+        <td>${escapeHtml(cita.motivo || "—")}</td>
+        <td>
+          <div class="row-actions">
+            <button type="button" class="btn btn-warning" data-action="edit-cita" data-id="${escapeHtml(cita.idCita)}">Editar</button>
+            <button type="button" class="btn btn-danger" data-action="delete-cita" data-id="${escapeHtml(cita.idCita)}">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function formatAppointmentDate(date) {
+  return String(date || "").split("-").reverse().join("/");
+}
+
+function openCitaDialog(cita = null) {
+  hideMessage(citaFormMessage);
+  citaForm.reset();
+  editingCitaId = cita ? cita.idCita : null;
+  document.getElementById("citaDialogTitle").textContent = cita ? "Editar cita" : "Nueva cita";
+
+  if (cita) {
+    renderServicioOptions(cita.idServicio);
+    citaForm.elements.namedItem("idMascota").value = cita.idMascota;
+    citaForm.elements.namedItem("idServicio").value = cita.idServicio;
+    citaForm.elements.namedItem("idVeterinario").value = cita.idVeterinario;
+    citaForm.elements.namedItem("fecha").value = cita.fecha;
+    citaForm.elements.namedItem("hora").value = String(cita.hora || "").slice(0, 5);
+    citaForm.elements.namedItem("estado").value = cita.estado || "PENDIENTE";
+    citaForm.elements.namedItem("motivo").value = cita.motivo || "";
+  } else {
+    renderServicioOptions();
+    citaForm.elements.namedItem("estado").value = "PENDIENTE";
+  }
+
+  citaDialog.showModal();
+}
+
+async function saveCita(event) {
+  event.preventDefault();
+  hideMessage(citaFormMessage);
+
+  const payload = {
+    idMascota: Number(citaForm.elements.namedItem("idMascota").value),
+    idServicio: Number(citaForm.elements.namedItem("idServicio").value),
+    idVeterinario: Number(citaForm.elements.namedItem("idVeterinario").value),
+    fecha: citaForm.elements.namedItem("fecha").value,
+    hora: citaForm.elements.namedItem("hora").value,
+    estado: citaForm.elements.namedItem("estado").value,
+    motivo: citaForm.elements.namedItem("motivo").value.trim() || null,
+  };
+  const path = editingCitaId ? `/citas/${editingCitaId}` : "/citas";
+
+  try {
+    const response = await apiFetch(path, {
+      method: editingCitaId ? "PUT" : "POST",
+      headers: authHeaders(true),
+      body: JSON.stringify(payload),
+    });
+    if (!response) return;
+
+    if (!response.ok) {
+      showMessage(citaFormMessage, "error", await readErrorMessage(response));
+      return;
+    }
+
+    citaDialog.close();
+    await loadCitas();
+    showMessage(citaMessage, "success", editingCitaId
+      ? "Cita actualizada correctamente."
+      : "Cita creada correctamente.");
+  } catch (error) {
+    showMessage(citaFormMessage, "error", "No se pudo guardar la cita.");
+    console.error("Error guardando cita:", error);
+  }
+}
+
+async function deleteCita(citaId) {
+  if (!window.confirm(`¿Eliminar la cita #${citaId}?`)) return;
+
+  try {
+    const response = await apiFetch(`/citas/${citaId}`, {
+      method: "DELETE",
+      headers: authHeaders(),
+    });
+    if (!response) return;
+
+    if (!response.ok) {
+      showMessage(citaMessage, "error", await readErrorMessage(response));
+      return;
+    }
+
+    await loadCitas();
+    showMessage(citaMessage, "success", `Cita #${citaId} eliminada correctamente.`);
+  } catch (error) {
+    showMessage(citaMessage, "error", "No se pudo eliminar la cita.");
+    console.error("Error eliminando cita:", error);
+  }
 }
 
 function getToken() {
@@ -121,6 +343,16 @@ function logout() {
 
 function isAdmin(user) {
   return user && String(user.role).toUpperCase() === "ADMIN";
+}
+
+function getRoleLabel(role) {
+  const roleLabels = {
+    ADMIN: "Administrador",
+    CUSTOMER: "Cliente",
+    VETERINARIAN: "Veterinario",
+  };
+  const normalizedRole = String(role || "").toUpperCase();
+  return roleLabels[normalizedRole] || normalizedRole || "Sin asignar";
 }
 
 function showMessage(element, type, text) {
@@ -164,7 +396,7 @@ async function loadProfile() {
     return;
   }
 
-  userInfo.textContent = "Cargando perfil...";
+  userInfo.innerHTML = `<div class="profile-field"><dt>Perfil</dt><dd>Cargando información...</dd></div>`;
 
   try {
     const response = await apiFetch("/users/me", {
@@ -173,35 +405,51 @@ async function loadProfile() {
     if (!response) return;
 
     if (!response.ok) {
-      userInfo.classList.add("error");
-      userInfo.textContent = await readErrorMessage(response);
+      userInfo.innerHTML = `<div class="profile-field"><dt>Estado del perfil</dt><dd class="profile-error">${escapeHtml(await readErrorMessage(response))}</dd></div>`;
       return;
     }
 
     currentUser = await response.json();
     localStorage.setItem("user", JSON.stringify(currentUser));
-    userInfo.classList.remove("error");
-    userInfo.textContent =
-      `ID: ${currentUser.id}\n` +
-      `Nombre: ${currentUser.fullName}\n` +
-      `Email: ${currentUser.email}\n` +
-      `Teléfono: ${currentUser.telefono || "-"}\n` +
-      `Dirección: ${currentUser.direccion || "-"}\n` +
-      `Rol: ${currentUser.role}\n` +
-      `Estado: ${currentUser.activo ? "Activo" : "Inactivo"}`;
+    document.getElementById("passwordUsername").value = currentUser.email || "";
+    const roleLabel = getRoleLabel(currentUser.role);
+    const canManageRecords = ["ADMIN", "VETERINARIAN"].includes(String(currentUser.role).toUpperCase());
+    const accountStatus = currentUser.activo ? "Activo" : "Inactivo";
 
-    welcomeText.textContent = `Hola, ${currentUser.fullName} (${currentUser.role})`;
+    userInfo.innerHTML = `
+      <div class="profile-field"><dt>Nombre completo</dt><dd>${escapeHtml(currentUser.fullName)}</dd></div>
+      <div class="profile-field"><dt>Correo electrónico</dt><dd>${escapeHtml(currentUser.email)}</dd></div>
+      <div class="profile-field"><dt>Teléfono</dt><dd>${escapeHtml(currentUser.telefono || "No registrado")}</dd></div>
+      <div class="profile-field"><dt>Dirección</dt><dd>${escapeHtml(currentUser.direccion || "No registrada")}</dd></div>
+      <div class="profile-field"><dt>Rol</dt><dd>${escapeHtml(roleLabel)}</dd></div>
+      <div class="profile-field"><dt>Estado</dt><dd><span class="badge ${currentUser.activo ? "badge-active" : "badge-inactive"}">${accountStatus}</span></dd></div>
+    `;
+
+    welcomeText.textContent = `Hola, ${currentUser.fullName}`;
+    accountStatusMetric.innerHTML = `<span class="badge ${currentUser.activo ? "badge-active" : "badge-inactive"}">${accountStatus}</span>`;
+    roleMetric.textContent = roleLabel;
+    userIdMetric.textContent = `#${currentUser.id}`;
+    adminSection.hidden = !isAdmin(currentUser);
+    adminNavLink.hidden = !isAdmin(currentUser);
+    usersMetricCard.hidden = !isAdmin(currentUser);
+    historiasNavLink.hidden = !canManageRecords;
+    ownersNavLink.hidden = !canManageRecords;
+    servicesNavLink.hidden = !canManageRecords;
+    productsNavLink.hidden = !canManageRecords;
+    historiasShortcut.hidden = !canManageRecords;
+    ownersShortcut.hidden = !canManageRecords;
+    servicesShortcut.hidden = !canManageRecords;
+    productsShortcut.hidden = !canManageRecords;
+    propietariosSection.hidden = !canManageRecords;
+    ownersMetricCard.hidden = !canManageRecords;
+    petsMetricCard.hidden = !canManageRecords;
 
     if (isAdmin(currentUser)) {
-      adminSection.hidden = false;
       await loadUsers();
-    } else {
-      adminSection.hidden = true;
     }
+    await loadCitas();
   } catch (error) {
-    userInfo.classList.add("error");
-    userInfo.textContent =
-      "No se pudo conectar con el backend. Verifica que esté corriendo en el puerto 8080.";
+    userInfo.innerHTML = `<div class="profile-field"><dt>Estado del perfil</dt><dd class="profile-error">No se pudo conectar con el backend. Verifica que esté corriendo en el puerto 8080.</dd></div>`;
     console.error(error);
   }
 }
@@ -259,6 +507,7 @@ async function changePassword(event) {
 
 async function loadUsers() {
   hideMessage(adminMessage);
+  usersMetric.textContent = "—";
   usersTableBody.innerHTML = `<tr><td colspan="6">Cargando usuarios...</td></tr>`;
 
   try {
@@ -282,8 +531,10 @@ async function loadUsers() {
     }
 
     usersCache = await response.json();
+    usersMetric.textContent = String(usersCache.length);
     renderUsersTable(usersCache);
   } catch (error) {
+    usersMetric.textContent = "—";
     usersTableBody.innerHTML =
       `<tr><td colspan="6">No se pudo cargar la lista de usuarios.</td></tr>`;
     console.error(error);
@@ -307,7 +558,7 @@ function renderUsersTable(users) {
           <td>${user.id}</td>
           <td>${escapeHtml(user.fullName)}</td>
           <td>${escapeHtml(user.email)}</td>
-          <td>${escapeHtml(user.role)}</td>
+          <td>${escapeHtml(getRoleLabel(user.role))}</td>
           <td><span class="badge ${statusClass}">${statusText}</span></td>
           <td>
             <div class="row-actions">
@@ -466,20 +717,35 @@ document.getElementById("logoutBtn").addEventListener("click", logout);
 document.getElementById("changePasswordForm").addEventListener("submit", changePassword);
 document.getElementById("reloadUsersBtn").addEventListener("click", loadUsers);
 document.getElementById("reloadPropietariosBtn").addEventListener("click", loadPropietariosConMascotas);
+document.getElementById("reloadCitasBtn").addEventListener("click", loadCitas);
+document.getElementById("addCitaBtn").addEventListener("click", () => openCitaDialog());
+document.getElementById("cancelCitaBtn").addEventListener("click", () => citaDialog.close());
+citaForm.addEventListener("submit", saveCita);
+citasTableBody.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const citaId = Number(button.dataset.id);
+  if (button.dataset.action === "edit-cita") {
+    const cita = citasCache.find((item) => Number(item.idCita) === citaId);
+    if (cita) openCitaDialog(cita);
+  } else if (button.dataset.action === "delete-cita") {
+    deleteCita(citaId);
+  }
+});
 document.getElementById("editUserForm").addEventListener("submit", saveEditedUser);
 document.getElementById("cancelEditBtn").addEventListener("click", () => editUserDialog.close());
 
-// Load profile and handle propietarios section visibility based on role
+document.querySelector(".side-nav").addEventListener("click", (event) => {
+  const link = event.target.closest("a.nav-link");
+  if (!link) return;
+
+  document.querySelectorAll(".nav-link").forEach((item) => item.classList.remove("is-active"));
+  link.classList.add("is-active");
+});
+
 loadProfile().then(() => {
-  // Determine if user is ADMIN or VETERINARIO
-  const isAdminOrVet = currentUser && (isAdmin(currentUser) || currentUser.role?.toUpperCase() === "ADMIN");
-
-  // Show/hide propietarios section
-  if (isAdminOrVet || currentUser.role?.toUpperCase() === "VETERINARIAN") {
-    propietariosSection.hidden = false;
+  if (currentUser && ["ADMIN", "VETERINARIAN"].includes(String(currentUser.role).toUpperCase())) {
     loadPropietariosConMascotas();
-  } else {
-    propietariosSection.hidden = true;
   }
-
 });

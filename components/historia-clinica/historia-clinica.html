@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Gestión de historias clínicas | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Gestión de historias clínicas</h1>
+        <p id="welcomeText">Administra el historial médico de las mascotas.</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary">Volver al dashboard</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-heading">
+        <div>
+          <h2>Historias clínicas</h2>
+          <p class="hint">Registra diagnósticos, tratamientos y observaciones de las citas veterinarias.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadHistoriasBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+          <button id="addHistoriaBtn" type="button" class="btn btn-primary">Nueva historia clínica</button>
+        </div>
+      </div>
+      <p id="historiaMessage" class="message" role="status" hidden></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">ID Cita</th>
+              <th scope="col">Diagnóstico</th>
+              <th scope="col">Tratamiento</th>
+              <th scope="col">Observaciones</th>
+              <th scope="col">Fecha registro</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historiasTableBody">
+            <tr><td colspan="7">Cargando historias clínicas...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="historiaDialog">
+    <form id="historiaForm" class="dialog-form">
+      <h2 id="historiaDialogTitle">Nueva historia clínica</h2>
+      <label>
+        ID de la cita
+        <input type="number" name="idCita" min="1" required>
+      </label>
+      <label>
+        Diagnóstico
+        <textarea name="diagnostico" maxlength="1000" placeholder="Diagnóstico veterinario"></textarea>
+      </label>
+      <label>
+        Tratamiento
+        <textarea name="tratamiento" maxlength="1000" placeholder="Tratamiento recetado"></textarea>
+      </label>
+      <label>
+        Observaciones
+        <textarea name="observaciones" maxlength="2000" placeholder="Observaciones adicionales (opcional)"></textarea>
+      </label>
+      <p id="historiaFormMessage" class="message" role="status" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelHistoriaBtn" type="button" class="btn btn-muted">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar historia clínica</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="historia-clinica.js"></script>
+</body>
+</html>

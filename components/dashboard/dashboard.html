@@ -3,122 +3,322 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VetCare - dashboard</title>
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Panel de gestión | VetCare</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dashboard.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
-  <main class="layout">
-    <header class="topbar">
-      <div>
-        <h1>Panel veterinario</h1>
-        <p id="welcomeText">Cargando sesión...</p>
-      </div>
-      <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
-    </header>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <a class="brand" href="/index.html" aria-label="VetCare, panel principal">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-copy"><strong>VetCare</strong><small>GESTIÓN VETERINARIA</small></span>
+      </a>
 
-    <section class="card">
-      <h2>Mi perfil</h2>
-      <div id="userInfo" class="info-box">Cargando perfil...</div>
-      <div class="actions">
-        <button id="refreshBtn" type="button" class="btn btn-primary">Actualizar perfil</button>
-      </div>
-    
+      <div class="nav-caption">MENÚ PRINCIPAL</div>
+      <nav class="side-nav">
+        <a class="nav-link is-active" href="#overview"><span class="nav-icon" aria-hidden="true">01</span>Resumen</a>
+        <a class="nav-link" href="#profileSection"><span class="nav-icon" aria-hidden="true">02</span>Mi perfil</a>
+        <a class="nav-link" href="#quickAccess"><span class="nav-icon" aria-hidden="true">03</span>Accesos rápidos</a>
+        <a class="nav-link" href="#citasSection"><span class="nav-icon" aria-hidden="true">04</span>Citas</a>
+        <a id="historiasNavLink" class="nav-link" href="/components/historia-clinica/historia-clinica.html" hidden><span class="nav-icon" aria-hidden="true">05</span>Historias clínicas</a>
+        <a id="servicesNavLink" class="nav-link" href="/components/servicio/servicio.html" hidden><span class="nav-icon" aria-hidden="true">06</span>Servicios</a>
+        <a id="productsNavLink" class="nav-link" href="/components/producto/producto.html" hidden><span class="nav-icon" aria-hidden="true">07</span>Productos</a>
+        <a id="ownersNavLink" class="nav-link" href="#propietariosSection" hidden><span class="nav-icon" aria-hidden="true">08</span>Propietarios</a>
+        <a id="adminNavLink" class="nav-link" href="#adminSection" hidden><span class="nav-icon" aria-hidden="true">09</span>Usuarios</a>
+      </nav>
 
-      <h2>Cambiar password</h2>
-      <p class="hint">Actualiza tu contraseña. Mínimo 6 caracteres.</p>
-      <form id="changePasswordForm" class="form-grid" novalidate>
-        <label>
-          Nueva contraseña
-          <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" placeholder="Nueva contraseña">
-        </label>
-        <label>
-          Confirmar contraseña
-          <input type="password" id="confirmNewPassword" name="confirmNewPassword" autocomplete="new-password" placeholder="Confirmar contraseña">
-        </label>
-        <button id="changePasswordBtn" type="submit" class="btn btn-primary">Cambiar password</button>
-      </form>
-      <p id="passwordMessage" class="message" hidden></p>
- </section>
-    <section class="card">
-      <h2>Acceso rápido</h2>
-      <p class="hint">Acceso directo a las secciones de gestión</p>
-      <div class="actions">
-        <a style="background: var(--primary); color: rgb(250, 246, 246);" href="/components/pet/pet.html" class="btn btn-secondary">Gestión de mascotas</a>
+      <div class="sidebar-footer">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span><strong>VetCare</strong><small>Panel seguro</small></span>
       </div>
-      <div>
-        --------------------------------------------
-      </div>
-      <section id="propietariosSection" class="card" hidden>
-      <h2>Propietarios y sus mascotas</h2>
-      <p class="hint">Lista de propietarios con sus mascotas registradas</p>
-      <div class="actions">
-        <button id="reloadPropietariosBtn" type="button" class="btn btn-primary">Recargar propietarios</button>
-        <a style="background: var(--primary); color: rgb(250, 246, 246);" href="/components/propietario/propietario.html" class="btn btn-secondary">Gestion de propietarios</a>
-      </div>
-      <p id="propietarioMessage" class="message" hidden></p>
-      <div class="table-wrap">
-        <table id="propietariosTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
-              <th>Mascotas</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="propietariosTableBody">
-            <tr><td colspan="7">Cargando propietarios...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    </aside>
 
-    <div>--------------------------------------------</div>
+    <main class="main-content">
+      <header class="topbar">
+        <div class="page-heading">
+          <p class="eyebrow">ESPACIO DE TRABAJO</p>
+          <h1 id="overview">Panel de control</h1>
+          <p id="welcomeText" class="welcome-text">Cargando sesión...</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="topbar-status"><span class="status-dot" aria-hidden="true"></span>Sesión activa</span>
+          <button id="logoutBtn" type="button" class="btn btn-outline-danger">Cerrar sesión</button>
+        </div>
+      </header>
 
-    <section id="adminSection" class="card" hidden>
-      <h2>Administración de usuarios</h2>
-      <p class="hint">Solo visible para ADMIN. Editar = PUT · Desactivar = DELETE lógico.</p>
-      <div class="actions">
-        <button id="reloadUsersBtn" type="button" class="btn btn-primary">Recargar usuarios</button>
+      <section class="metrics-grid" aria-label="Resumen de la cuenta">
+        <article class="metric-card">
+          <span class="metric-label">Estado de cuenta</span>
+          <strong id="accountStatusMetric" class="metric-value"><span class="badge badge-neutral">Verificando</span></strong>
+          <span class="metric-note">Estado de tu perfil</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">Rol asignado</span>
+          <strong id="roleMetric" class="metric-value">—</strong>
+          <span class="metric-note">Permisos de acceso</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">Identificador</span>
+          <strong id="userIdMetric" class="metric-value">—</strong>
+          <span class="metric-note">ID de usuario</span>
+        </article>
+        <article id="ownersMetricCard" class="metric-card" hidden>
+          <span class="metric-label">Propietarios</span>
+          <strong id="ownersMetric" class="metric-value">—</strong>
+          <span class="metric-note">Registros disponibles</span>
+        </article>
+        <article id="petsMetricCard" class="metric-card" hidden>
+          <span class="metric-label">Mascotas</span>
+          <strong id="petsMetric" class="metric-value">—</strong>
+          <span class="metric-note">Pacientes registrados</span>
+        </article>
+        <article id="usersMetricCard" class="metric-card" hidden>
+          <span class="metric-label">Usuarios</span>
+          <strong id="usersMetric" class="metric-value">—</strong>
+          <span class="metric-note">Cuentas del sistema</span>
+        </article>
+      </section>
+
+      <section id="profileSection" class="panel profile-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CUENTA</p>
+            <h2>Mi perfil</h2>
+            <p class="section-description">Información personal y seguridad de tu cuenta.</p>
+          </div>
+          <button id="refreshBtn" type="button" class="btn btn-secondary">Actualizar perfil</button>
+        </div>
+
+        <dl id="userInfo" class="profile-grid" aria-live="polite">
+          <div class="profile-field"><dt>Perfil</dt><dd>Cargando información...</dd></div>
+        </dl>
+
+        <div class="form-divider"></div>
+        <div class="section-heading form-heading">
+          <div>
+            <h3>Actualizar contraseña</h3>
+            <p class="section-description">Utiliza al menos 6 caracteres para crear una contraseña segura.</p>
+          </div>
+        </div>
+        <form id="changePasswordForm" class="form-grid" novalidate>
+          <input type="text" id="passwordUsername" name="username" autocomplete="username" hidden>
+          <label>
+            Nueva contraseña
+            <input type="password" id="newPassword" name="newPassword" autocomplete="new-password" placeholder="Escribe una nueva contraseña">
+          </label>
+          <label>
+            Confirmar contraseña
+            <input type="password" id="confirmNewPassword" name="confirmNewPassword" autocomplete="new-password" placeholder="Repite la nueva contraseña">
+          </label>
+          <div class="form-actions">
+            <button id="changePasswordBtn" type="submit" class="btn btn-primary">Guardar contraseña</button>
+          </div>
+        </form>
+        <p id="passwordMessage" class="message" role="status" hidden></p>
+      </section>
+
+      <section id="quickAccess" class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OPERACIÓN</p>
+            <h2>Accesos rápidos</h2>
+            <p class="section-description">Accede directamente a las herramientas de gestión.</p>
+          </div>
+        </div>
+        <div class="shortcut-grid">
+          <a href="/components/pet/pet.html" class="shortcut-card">
+            <span class="shortcut-mark" aria-hidden="true">01</span>
+            <span><strong>Gestión de mascotas</strong><small>Consultar y administrar pacientes</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="historiasShortcut" href="/components/historia-clinica/historia-clinica.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">03</span>
+            <span><strong>Historias clínicas</strong><small>Diagnósticos, tratamientos y observaciones</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="servicesShortcut" href="/components/servicio/servicio.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">04</span>
+            <span><strong>Gestión de servicios</strong><small>Administrar catálogo, precios y duración</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="productsShortcut" href="/components/producto/producto.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">05</span>
+            <span><strong>Gestión de productos</strong><small>Administrar inventario y precios</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+          <a id="ownersShortcut" href="/components/propietario/propietario.html" class="shortcut-card" hidden>
+            <span class="shortcut-mark" aria-hidden="true">06</span>
+            <span><strong>Gestión de propietarios</strong><small>Administrar datos de propietarios</small></span>
+            <span class="shortcut-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="citasSection" class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">AGENDA</p>
+            <h2>Citas veterinarias</h2>
+            <p class="section-description">Programa y administra las citas de las mascotas.</p>
+          </div>
+          <div class="actions">
+            <button id="reloadCitasBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+            <button id="addCitaBtn" type="button" class="btn btn-primary">Nueva cita</button>
+          </div>
+        </div>
+        <p id="citaMessage" class="message" role="status" hidden></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Mascota</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Servicio</th>
+                <th scope="col">Veterinario</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="citasTableBody">
+              <tr><td colspan="9">Cargando citas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="propietariosSection" class="panel" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">DIRECTORIO</p>
+            <h2>Propietarios y mascotas</h2>
+            <p class="section-description">Propietarios registrados y sus pacientes asociados.</p>
+          </div>
+          <div class="actions">
+            <button id="reloadPropietariosBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+            <a href="/components/propietario/propietario.html" class="btn btn-primary">Gestionar propietarios</a>
+            <a href="/components/pet/pet.html" class="btn btn-primary">Gestionar mascotas</a>
+          </div>
+        </div>
+        <p id="propietarioMessage" class="message" role="status" hidden></p>
+        <div class="table-wrap">
+          <table id="propietariosTable">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Mascotas</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="propietariosTableBody">
+              <tr><td colspan="7">Cargando propietarios...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="adminSection" class="panel" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ADMINISTRACIÓN</p>
+            <h2>Usuarios del sistema</h2>
+            <p class="section-description">Actualiza los datos o desactiva cuentas sin eliminar sus registros.</p>
+          </div>
+          <button id="reloadUsersBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+        </div>
+        <p id="adminMessage" class="message" role="status" hidden></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Correo electrónico</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="6">Cargando usuarios...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="citaDialog">
+    <form id="citaForm" class="dialog-form">
+      <p class="eyebrow">AGENDA</p>
+      <h2 id="citaDialogTitle">Nueva cita</h2>
+      <label>
+        Mascota
+        <select id="citaIdMascota" name="idMascota" required>
+          <option value="">Selecciona una mascota</option>
+        </select>
+      </label>
+      <label>
+        Servicio
+        <select id="citaIdServicio" name="idServicio" required>
+          <option value="">Selecciona un servicio</option>
+        </select>
+      </label>
+      <label>
+        ID del veterinario
+        <input type="number" id="citaIdVeterinario" name="idVeterinario" min="1" required>
+      </label>
+      <label>
+        Fecha
+        <input type="date" id="citaFecha" name="fecha" required>
+      </label>
+      <label>
+        Hora
+        <input type="time" id="citaHora" name="hora" required>
+      </label>
+      <label>
+        Estado
+        <select id="citaEstado" name="estado">
+          <option value="PENDIENTE">Pendiente</option>
+          <option value="CONFIRMADA">Confirmada</option>
+          <option value="COMPLETADA">Completada</option>
+          <option value="CANCELADA">Cancelada</option>
+        </select>
+      </label>
+      <label>
+        Motivo (opcional)
+        <input type="text" id="citaMotivo" name="motivo" maxlength="500">
+      </label>
+      <p id="citaFormMessage" class="message" role="status" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" id="cancelCitaBtn" class="btn btn-muted">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cita</button>
       </div>
-      <p id="adminMessage" class="message" hidden></p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="usersTableBody">
-            <tr><td colspan="6">Cargando usuarios...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
+    </form>
+  </dialog>
 
   <dialog id="editUserDialog">
     <form id="editUserForm" class="dialog-form">
-      <h3>Editar usuario</h3>
+      <p class="eyebrow">ADMINISTRACIÓN</p>
+      <h2>Editar usuario</h2>
       <input type="hidden" id="editUserId" name="editUserId">
       <label>
         Nombre completo
         <input type="text" id="editFullName" required>
       </label>
       <label>
-        Email
+        Correo electrónico
         <input type="email" id="editEmail" required>
       </label>
       <label>
@@ -132,23 +332,22 @@
       <label>
         Rol
         <select id="editRole">
-          <option value="CUSTOMER">CUSTOMER</option>
-          <option value="VETERINARIAN">VETERINARIAN</option>
-          <option value="ADMIN">ADMIN</option>
+          <option value="CUSTOMER">Cliente</option>
+          <option value="VETERINARIAN">Veterinario</option>
+          <option value="ADMIN">Administrador</option>
         </select>
       </label>
       <label>
         Nueva contraseña (opcional)
-        <input type="password" id="editPassword" name="editPassword" placeholder="Dejar vacío para no cambiar">
+        <input type="password" id="editPassword" name="editPassword" autocomplete="new-password" placeholder="Dejar vacío para no cambiar">
       </label>
-      <p id="editMessage" class="message" hidden></p>
+      <p id="editMessage" class="message" role="status" hidden></p>
       <div class="dialog-actions">
         <button type="button" id="cancelEditBtn" class="btn btn-muted">Cancelar</button>
         <button type="submit" class="btn btn-primary">Guardar cambios</button>
       </div>
     </form>
   </dialog>
-</section>
   <script src="/components/dashboard/dashboard.js"></script>
 </body>
 </html>

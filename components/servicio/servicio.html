@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Gestión de servicios | VetCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../common/catalog.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="layout">
+    <header class="topbar">
+      <div>
+        <h1>Gestión de servicios</h1>
+        <p id="welcomeText">Administra el catálogo, sus precios y duración.</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="../dashboard/dashboard.html" class="btn btn-secondary">Volver al dashboard</a>
+        <button id="logoutBtn" type="button" class="btn btn-danger">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="card-heading">
+        <div>
+          <h2>Servicios veterinarios</h2>
+          <p class="hint">Los servicios desactivados se conservan en el historial de citas.</p>
+        </div>
+        <div class="actions">
+          <button id="reloadServiciosBtn" type="button" class="btn btn-secondary">Actualizar lista</button>
+          <button id="addServicioBtn" type="button" class="btn btn-primary">Nuevo servicio</button>
+        </div>
+      </div>
+      <p id="servicioMessage" class="message" role="status" hidden></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Servicio</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Duración</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="serviciosTableBody">
+            <tr><td colspan="7">Cargando servicios...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="servicioDialog">
+    <form id="servicioForm" class="dialog-form">
+      <h2 id="servicioDialogTitle">Nuevo servicio</h2>
+      <label>
+        Nombre del servicio
+        <input type="text" name="nombreServicio" maxlength="150" required>
+      </label>
+      <label>
+        Descripción
+        <textarea name="descripcion" maxlength="65535"></textarea>
+      </label>
+      <label>
+        Duración (minutos)
+        <input type="number" name="duracionMin" min="1" max="32767" step="1" required>
+      </label>
+      <label>
+        Precio (COP)
+        <input type="number" name="precio" min="0" max="9999999999.99" step="0.01" required>
+      </label>
+      <label>
+        Estado
+        <select name="activo" required>
+          <option value="true">Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
+      </label>
+      <p id="servicioFormMessage" class="message" role="status" hidden></p>
+      <div class="dialog-actions">
+        <button id="cancelServicioBtn" type="button" class="btn btn-muted">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar servicio</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="servicio.js"></script>
+</body>
+</html>

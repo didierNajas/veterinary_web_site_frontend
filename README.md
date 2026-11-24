@@ -25,6 +25,7 @@ veterinary_web_site_frontend2/
 - **Responsive Design**: Works on mobile and desktop devices.
 - **Form Validation**: Client-side validation for email, password strength, and required fields.
 - **UI Feedback**: Success and error messages for form submissions.
+- **Veterinary operations**: Appointment scheduling plus service and product catalogs in the authenticated dashboard.
 
 ## Authentication Flow
 
@@ -67,6 +68,10 @@ const API_BASE_URL = "http://localhost:8080/api";
 ### API Endpoints Used
 - **POST `/auth/login`**: Authenticates user credentials and returns a JWT token.
 - **POST `/auth/register`**: Registers a new user and returns a JWT token.
+- **GET/POST/PUT/DELETE `/servicios`**: Manages service catalog entries.
+- **GET/POST/PUT/DELETE `/productos`**: Manages products using category IDs from **GET `/categorias`**.
+
+The dashboard links to service and product management for administrators and veterinarians. Products use the category list from the API, and appointments select active services from `/servicios`.
 
 > **Note**: The backend must be running and accessible at the specified `API_BASE_URL` for the frontend to function correctly. The frontend does not include backend logic; it assumes a compatible API is available.
 
